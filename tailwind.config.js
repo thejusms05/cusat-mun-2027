@@ -1,0 +1,9 @@
+module.exports={content:["./app/**/*.{js,jsx}","./components/**/*.{js,jsx}"],theme:{extend:{
+colors:{
+ ink:{DEFAULT:"#1B2A4A",700:"#24375E",900:"#0F1B33"},
+ paper:{DEFAULT:"#F4EEDF",dark:"#E9DFC5",deep:"#ECE2C9"},
+ stamp:{DEFAULT:"#B23A2E",light:"#C9544A"},
+ gold:{DEFAULT:"#B8902F",light:"#D1AC52"},
+},
+fontFamily:{serif:["var(--font-serif)","Georgia","serif"],sans:["var(--font-sans)","system-ui","sans-serif"],mono:["var(--font-mono)","ui-monospace","monospace"]},
+}},plugins:[]}
