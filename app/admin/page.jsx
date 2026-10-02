@@ -35,7 +35,7 @@ export default function Admin(){
 
  const load=async()=>{
   setLoading(true);
-  const r=await fetch("/api/admin/data");
+  const r=await fetch("/api/admin/data",{cache:"no-store"})
   const json=await r.json();
   const grouped={};
   for(const p of json.portfolios||[]) (grouped[p.committee_id] ||= []).push(p);

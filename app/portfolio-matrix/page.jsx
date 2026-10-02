@@ -19,7 +19,7 @@ export default function PortfolioMatrix(){
  const [loading,setLoading]=useState(true);
 
  useEffect(()=>{
-  fetch("/api/admin/data").then(r=>r.json()).then(json=>{
+  fetch("/api/admin/data",{cache:"no-store"}).then(r=>r.json()).then(json=>{
    const grouped={};
    for(const p of json.portfolios||[]) (grouped[p.committee_id] ||= []).push(p);
    setPortfolios(grouped);
