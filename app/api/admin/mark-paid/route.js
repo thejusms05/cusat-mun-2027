@@ -7,9 +7,20 @@ export const revalidate = 0;
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
 export async function POST(req) {
-  const {registrationId, portfolioId} = await req.json();
-  const {error: e1} = await supabase.from("portfolios").update({status: "confirmed"}).eq("id", portfolioId);
-  const {error: e2} = await supabase.from("registrations").update({status: "confirmed"}).eq("id", registrationId);
-  if (e1 || e2) return NextResponse.json({error: "Update failed."}, {status: 500});
+  const {registrationId, portfolioId, delegateIndex} = await req.json();
+
+  await supabase.from("portfolios").update({status: "confirmed"}).eq("id", portfolioId);
+
+  if (delegateIndex === undefined || delegateIndex === null) {
+    await supabase.from("registrations").update({status: "confirmed"}).eq("id", registrationId);
+  } else {
+    const {data: reg} = await supabase.from("registrations").select("preferences").eq("id", registrationId).single();
+    const preferences = [...(reg?.preferences || [])];
+    if (preferences[delegateIndex]?.assigned) {
+      preferences[delegateIndex] = {...preferences[delegateIndex], assigned: {...preferences[delegateIndex].assigned, status: "confirmed"}};
+      await supabase.from("registrations").update({preferences}).eq("id", registrationId);
+    }
+  }
+
   return NextResponse.json({ok: true}, {headers: {"Cache-Control": "no-store, max-age=0"}});
 }

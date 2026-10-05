@@ -19,7 +19,7 @@ export default function PortfolioMatrix(){
  const [loading,setLoading]=useState(true);
 
  useEffect(()=>{
-  fetch("/api/admin/data",{cache:"no-store"}).then(r=>r.json()).then(json=>{
+  fetch("/api/portfolios",{cache:"no-store"}).then(r=>r.json()).then(json=>{
    const grouped={};
    for(const p of json.portfolios||[]) (grouped[p.committee_id] ||= []).push(p);
    setPortfolios(grouped);
@@ -49,11 +49,11 @@ export default function PortfolioMatrix(){
        <div className="border-t-2 border-ink/10 px-5 py-4">
         {list
          ? <ul className="grid gap-2 sm:grid-cols-2">
-            {list.sort((a,b)=>a.name.localeCompare(b.name)).map(p=><li key={p.id} className="flex items-center justify-between gap-3 border-b border-ink/10 py-2 text-sm">
+            {[...list].sort((a,b)=>a.name.localeCompare(b.name)).map(p=><li key={p.id} className="flex items-center justify-between gap-3 border-b border-ink/10 py-2 text-sm">
              <span>{p.name}</span><StatusBadge status={p.status}/>
             </li>)}
            </ul>
-         : <p className="font-mono text-sm text-ink/60">{c.abbr} is a press committee and does not carry country or party portfolios — register directly from the Registration page under International Press.</p>}
+         : <p className="font-mono text-sm text-ink/60">{c.abbr} is a press committee and does not carry country or party portfolios — register directly from the Registration page.</p>}
        </div>
       </div>
      </div>

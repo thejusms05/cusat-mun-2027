@@ -1,7 +1,7 @@
 "use client";
-import {Shield,Tent,Vote,Venus,Scale,Crown,Newspaper,Camera,Landmark} from "lucide-react";
+import {Shield,Scroll,Vote,Venus,Scale,Crown,Newspaper,Camera,Landmark} from "lucide-react";
 
-const ICONS={shield:Shield,tent:Tent,vote:Vote,venus:Venus,scale:Scale,crown:Crown,newspaper:Newspaper,camera:Camera};
+const ICONS={shield:Shield,scroll:Scroll,vote:Vote,venus:Venus,scale:Scale,crown:Crown,newspaper:Newspaper,camera:Camera};
 
 // A UN-roundel style badge: concentric rings, a laurel-ish inner ring, and
 // a lucide icon standing in for each committee's emblem artwork.
