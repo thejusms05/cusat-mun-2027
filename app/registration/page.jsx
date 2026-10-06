@@ -18,6 +18,7 @@ const CATEGORIES=[
 ];
 
 const emptyPrefs=school=>school?[{committee:SCHOOL_COMMITTEE,portfolios:["","",""]}]:[{committee:"",portfolios:["","",""]},{committee:"",portfolios:["","",""]},{committee:"",portfolios:["","",""]}];
+const emptyDelegate=school=>({name:"",exp:"",expDetail:"",awards:"",prefs:emptyPrefs(school)});
 
 function PortfolioRanks({committeeAbbr,portfolios,value,onChange}){
  const avail=portfolios.filter(p=>p.committee_id===idFor(committeeAbbr)&&p.status==="available");
@@ -66,6 +67,27 @@ function DelegateBlock({index,delegate,school,portfolios,onChange,attempted}){
   <p className="label-mono mb-2 text-ink/60">Delegate {index+1}</p>
   <label className="label-mono mb-1 block text-ink/60">Delegate Name</label>
   <input value={delegate.name} onChange={e=>onChange({...delegate,name:e.target.value})} className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-2.5 font-mono text-sm focus:border-ink"/>
+  {attempted&&!delegate.name.trim()&&<p className="mt-1 font-mono text-xs text-stamp">This field is required.</p>}
+
+  <div className="mt-4">
+   <label className="label-mono mb-1 block text-ink/60">Previous MUN Experience</label>
+   <select value={delegate.exp} onChange={e=>onChange({...delegate,exp:e.target.value})} className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-2.5 font-mono text-sm focus:border-ink">
+    <option value="">Select…</option><option>0</option><option>1-3</option><option>4+</option>
+   </select>
+   {attempted&&!delegate.exp&&<p className="mt-1 font-mono text-xs text-stamp">This field is required.</p>}
+  </div>
+  {delegate.exp&&delegate.exp!=="0"&&<>
+   <div className="mt-3">
+    <label className="label-mono mb-1 block text-ink/60">Briefly describe prior MUN experience</label>
+    <textarea rows={2} value={delegate.expDetail} onChange={e=>onChange({...delegate,expDetail:e.target.value})} className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-2.5 font-mono text-sm focus:border-ink"/>
+    {attempted&&!delegate.expDetail.trim()&&<p className="mt-1 font-mono text-xs text-stamp">This field is required.</p>}
+   </div>
+   <div className="mt-3">
+    <label className="label-mono mb-1 block text-ink/60">Awards or recognitions <span className="text-ink/35">(optional)</span></label>
+    <textarea rows={2} value={delegate.awards} onChange={e=>onChange({...delegate,awards:e.target.value})} className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-2.5 font-mono text-sm focus:border-ink"/>
+   </div>
+  </>}
+
   <div className="mt-4"><PrefsBlock school={school} portfolios={portfolios} value={delegate.prefs} onChange={prefs=>onChange({...delegate,prefs})} attempted={attempted}/></div>
  </div>);
 }
@@ -93,7 +115,7 @@ export default function Registration(){
   const n=Math.max(0,Math.min(25,parseInt(size)||0));
   setDelegates(prev=>{
    const next=prev.slice(0,n);
-   while(next.length<n) next.push({name:"",prefs:emptyPrefs(isSchool)});
+   while(next.length<n) next.push(emptyDelegate(isSchool));
    return next;
   });
  },[size,isSchool]);
@@ -102,7 +124,7 @@ export default function Registration(){
  const prefsValid=list=>list.every(x=>x.committee&&x.portfolios.every(Boolean)&&new Set(x.portfolios).size===x.portfolios.length);
  const individualValid=!isGroup?(exp.exp&&(exp.exp==="0"||exp.expDetail.trim())&&prefsValid(prefs)):true;
  const sizeNum=parseInt(size)||0;
- const groupValid=isGroup?(sizeNum>=2&&sizeNum<=25&&delegates.length===sizeNum&&delegates.every(d=>d.name.trim()&&prefsValid(d.prefs))):true;
+ const groupValid=isGroup?(sizeNum>=2&&sizeNum<=25&&delegates.length===sizeNum&&delegates.every(d=>d.name.trim()&&d.exp&&(d.exp==="0"||d.expDetail.trim())&&prefsValid(d.prefs))):true;
  const formValid=category&&basicValid&&individualValid&&groupValid;
  const bad=cond=>attempted&&cond;
 
@@ -116,7 +138,7 @@ export default function Registration(){
     name:basic.name,inst:basic.inst,contact:basic.contact,
     experience:!isGroup?exp.exp:null,expDetail:!isGroup?exp.expDetail:null,awards:!isGroup?exp.awards:null,
     delegationSize:isGroup?sizeNum:null,
-    preferences:isGroup?delegates.map(d=>({name:d.name,prefs:d.prefs})):prefs,
+    preferences:isGroup?delegates.map(d=>({name:d.name,experience:d.exp,expDetail:d.expDetail,awards:d.awards,prefs:d.prefs})):prefs,
    })});
    if(!r.ok)throw new Error();
    setState("done");

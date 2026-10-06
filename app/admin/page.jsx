@@ -151,6 +151,8 @@ export default function Admin(){
         return(
          <div key={i} className="border-2 border-ink/10 p-3">
           <p className="font-serif font-bold">{d.name||`Delegate ${i+1}`}</p>
+          {d.experience&&<p className="font-mono text-xs text-ink/60">Experience: {d.experience}{d.expDetail?` — ${d.expDetail}`:""}</p>}
+          {d.awards&&<p className="font-mono text-xs text-ink/60">Awards: {d.awards}</p>}
           <ol className="mt-1 space-y-0.5 font-mono text-xs text-ink/60">
            {(d.prefs||[]).map((p,j)=><li key={j}>{j+1}. {p.committee} — {(p.portfolios||[]).filter(Boolean).join(" / ")||"(no portfolios chosen)"}</li>)}
           </ol>
