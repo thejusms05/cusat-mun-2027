@@ -1,6 +1,6 @@
 "use client";
 import {useEffect,useState} from "react";
-import {Lock,CheckCircle2,UserPlus,AlertTriangle,Loader2} from "lucide-react";
+import {Lock,CheckCircle2,UserPlus,AlertTriangle,Loader2,Pencil,Trash2,Save,X} from "lucide-react";
 import {committees} from "@/lib/data";
 import PageHeader from "@/components/PageHeader";
 import StatusBadge from "@/components/StatusBadge";
@@ -47,6 +47,8 @@ export default function Admin(){
  const [picks,setPicks]=useState({});
  const [loading,setLoading]=useState(true);
  const [busy,setBusy]=useState(null);
+ const [editing,setEditing]=useState(null);
+ const [editDraft,setEditDraft]=useState({});
 
  const load=async()=>{
   setLoading(true);
@@ -87,6 +89,37 @@ export default function Admin(){
   setBusy(null);
  };
 
+ const startEdit=reg=>{
+  setEditDraft({
+   name:reg.name||"",institution:reg.institution||"",email:reg.email||"",
+   experience:reg.experience||"",experienceDetail:reg.experience_detail||"",awards:reg.awards||"",
+   delegateNames:(reg.preferences||[]).map(d=>d.name||""),
+  });
+  setEditing(reg.id);
+ };
+ const saveEdit=async reg=>{
+  const key=`edit-${reg.id}`;
+  setBusy(key);
+  const isDelegation=reg.type==="delegation";
+  const patch={name:editDraft.name,institution:editDraft.institution,email:editDraft.email};
+  if(!isDelegation){patch.experience=editDraft.experience;patch.experienceDetail=editDraft.experienceDetail;patch.awards=editDraft.awards;}
+  else{patch.delegateNames=editDraft.delegateNames;}
+  const r=await fetch("/api/admin/edit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({registrationId:reg.id,patch})});
+  if(!r.ok){const err=await r.json().catch(()=>({}));alert("Save failed: "+(err.error||r.status));}
+  setEditing(null);
+  await load();
+  setBusy(null);
+ };
+ const deleteReg=async reg=>{
+  if(!confirm(`Delete registration for "${reg.name||"this entry"}"? This cannot be undone, and will free up any portfolios assigned to them.`))return;
+  const key=`delete-${reg.id}`;
+  setBusy(key);
+  const r=await fetch("/api/admin/delete",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({registrationId:reg.id})});
+  if(!r.ok){const err=await r.json().catch(()=>({}));alert("Delete failed: "+(err.error||r.status));}
+  await load();
+  setBusy(null);
+ };
+
  const delegationBadgeStatus=reg=>{
   const list=reg.preferences||[];
   const assigned=list.filter(d=>d.assigned);
@@ -106,18 +139,46 @@ export default function Admin(){
    return(
     <div key={reg.id} className="border-2 border-ink/15 bg-paper p-5">
      <div className="flex flex-wrap items-start justify-between gap-3">
-      <div>
-       <p className="font-serif text-lg font-bold">{reg.name||"(no name)"}</p>
-       <p className="label-mono text-ink/50">{reg.type} · {CATEGORY_LABELS[reg.category]||reg.category||"—"} · {reg.institution} · {reg.email}</p>
-       {isDelegation&&<p className="mt-1 font-mono text-xs text-ink/60">{reg.delegation_size} delegates</p>}
-       {!isDelegation&&reg.experience&&<p className="mt-1 font-mono text-xs text-ink/60">Experience: {reg.experience}{reg.experience_detail?` — ${reg.experience_detail}`:""}</p>}
-       {!isDelegation&&reg.awards&&<p className="font-mono text-xs text-ink/60">Awards: {reg.awards}</p>}
-       {!isDelegation&&reg.preferences?.length>0&&
-        <ol className="mt-1 space-y-0.5 font-mono text-xs text-ink/60">
-         {reg.preferences.map((p,i)=><li key={i}>{i+1}. {p.committee} — {(p.portfolios||[]).filter(Boolean).join(" / ")||"(no portfolios chosen)"}</li>)}
-        </ol>}
+      {editing===reg.id?(
+       <div className="w-full max-w-md space-y-2">
+        <input value={editDraft.name} onChange={e=>setEditDraft({...editDraft,name:e.target.value})} placeholder="Name" className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-1.5 font-mono text-sm focus:border-ink"/>
+        <input value={editDraft.institution} onChange={e=>setEditDraft({...editDraft,institution:e.target.value})} placeholder="Institution" className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-1.5 font-mono text-sm focus:border-ink"/>
+        <input value={editDraft.email} onChange={e=>setEditDraft({...editDraft,email:e.target.value})} placeholder="Email" className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-1.5 font-mono text-sm focus:border-ink"/>
+        {!isDelegation&&<>
+         <select value={editDraft.experience} onChange={e=>setEditDraft({...editDraft,experience:e.target.value})} className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-1.5 font-mono text-sm focus:border-ink">
+          <option value="">Experience…</option><option>0</option><option>1-3</option><option>4+</option>
+         </select>
+         <textarea rows={2} value={editDraft.experienceDetail} onChange={e=>setEditDraft({...editDraft,experienceDetail:e.target.value})} placeholder="Experience detail" className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-1.5 font-mono text-sm focus:border-ink"/>
+         <textarea rows={2} value={editDraft.awards} onChange={e=>setEditDraft({...editDraft,awards:e.target.value})} placeholder="Awards" className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-1.5 font-mono text-sm focus:border-ink"/>
+        </>}
+        {isDelegation&&editDraft.delegateNames.map((n,i)=>(
+         <input key={i} value={n} onChange={e=>{const next=[...editDraft.delegateNames];next[i]=e.target.value;setEditDraft({...editDraft,delegateNames:next});}} placeholder={`Delegate ${i+1} name`} className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-1.5 font-mono text-sm focus:border-ink"/>
+        ))}
+        <div className="flex gap-2 pt-1">
+         <button onClick={()=>saveEdit(reg)} disabled={busy===`edit-${reg.id}`} className="btn-ink py-1.5 text-xs disabled:opacity-40">{busy===`edit-${reg.id}`?<Loader2 className="animate-spin" size={14}/>:<Save size={14}/>}Save</button>
+         <button onClick={()=>setEditing(null)} className="btn-ghost py-1.5 text-xs"><X size={14}/>Cancel</button>
+        </div>
+       </div>
+      ):(
+       <div>
+        <p className="font-serif text-lg font-bold">{reg.name||"(no name)"}</p>
+        <p className="label-mono text-ink/50">{reg.type} · {CATEGORY_LABELS[reg.category]||reg.category||"—"} · {reg.institution} · {reg.email}</p>
+        {isDelegation&&<p className="mt-1 font-mono text-xs text-ink/60">{reg.delegation_size} delegates</p>}
+        {!isDelegation&&reg.experience&&<p className="mt-1 font-mono text-xs text-ink/60">Experience: {reg.experience}{reg.experience_detail?` — ${reg.experience_detail}`:""}</p>}
+        {!isDelegation&&reg.awards&&<p className="font-mono text-xs text-ink/60">Awards: {reg.awards}</p>}
+        {!isDelegation&&reg.preferences?.length>0&&
+         <ol className="mt-1 space-y-0.5 font-mono text-xs text-ink/60">
+          {reg.preferences.map((p,i)=><li key={i}>{i+1}. {p.committee} — {(p.portfolios||[]).filter(Boolean).join(" / ")||"(no portfolios chosen)"}</li>)}
+         </ol>}
+       </div>
+      )}
+      <div className="flex items-center gap-2">
+       <StatusBadge status={isDelegation?delegationBadgeStatus(reg):(reg.status==="new"?"available":reg.status==="assigned"?"pending":"confirmed")}/>
+       {editing!==reg.id&&<>
+        <button onClick={()=>startEdit(reg)} title="Edit" className="rounded-sm border-2 border-ink/20 p-1.5 text-ink/60 transition hover:border-ink hover:text-ink"><Pencil size={14}/></button>
+        <button onClick={()=>deleteReg(reg)} disabled={busy===`delete-${reg.id}`} title="Delete" className="rounded-sm border-2 border-stamp/40 p-1.5 text-stamp transition hover:border-stamp disabled:opacity-40">{busy===`delete-${reg.id}`?<Loader2 className="animate-spin" size={14}/>:<Trash2 size={14}/>}</button>
+       </>}
       </div>
-      <StatusBadge status={isDelegation?delegationBadgeStatus(reg):(reg.status==="new"?"available":reg.status==="assigned"?"pending":"confirmed")}/>
      </div>
 
      {!isDelegation&&reg.status==="new"&&(
