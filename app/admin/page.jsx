@@ -26,7 +26,7 @@ function Gate({onUnlock}){
  </div>);
 }
 
-function AssignRow({onAssign,pick,setPick,committeeOptions,availablePortfolios,busy}){
+function AssignRow({onAssign,pick,setPick,committeeOptions,availablePortfolios,busy,buttonLabel="Assign"}){
  return(<div className="flex flex-wrap items-end gap-2">
   <select value={pick.committeeId||""} onChange={e=>setPick({committeeId:e.target.value,portfolioId:""})} className="border-2 border-ink/25 bg-transparent px-2 py-1.5 font-mono text-xs">
    <option value="">Committee…</option>
@@ -36,7 +36,26 @@ function AssignRow({onAssign,pick,setPick,committeeOptions,availablePortfolios,b
    <option value="">Portfolio…</option>
    {availablePortfolios?.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}
   </select>
-  <button onClick={onAssign} disabled={!pick.committeeId||!pick.portfolioId||busy} className="btn-ink py-1.5 text-xs disabled:opacity-40">{busy?<Loader2 className="animate-spin" size={14}/>:<UserPlus size={14}/>}Assign</button>
+  <button onClick={onAssign} disabled={!pick.committeeId||!pick.portfolioId||busy} className="btn-ink py-1.5 text-xs disabled:opacity-40">{busy?<Loader2 className="animate-spin" size={14}/>:<UserPlus size={14}/>}{buttonLabel}</button>
+ </div>);
+}
+
+// Shared panel for "not assigned yet" / "assigned, payment pending" / "confirmed" —
+// used for both an individual delegate's own assignment and each delegate inside a delegation.
+function AssignmentPanel({status,label,pick,setPick,committeeOptions,availablePortfolios,onAssign,onUnassign,onMarkPaid,busyAssign,busyUnassign,busyPaid}){
+ if(status==="new"){
+  return <AssignRow onAssign={onAssign} pick={pick} setPick={setPick} committeeOptions={committeeOptions} availablePortfolios={availablePortfolios} busy={busyAssign}/>;
+ }
+ return(<div className="space-y-3">
+  <div className="flex flex-wrap items-center gap-3">
+   <p className="font-mono text-sm">{status==="confirmed"?"Confirmed":"Assigned"}: <b>{label}</b></p>
+   {status==="pending"&&<button onClick={onMarkPaid} disabled={busyPaid} className="btn-ghost py-1.5 text-xs disabled:opacity-40">{busyPaid?<Loader2 className="animate-spin" size={14}/>:<CheckCircle2 size={14}/>}Mark as Paid</button>}
+   <button onClick={onUnassign} disabled={busyUnassign} className="btn-ghost border-stamp/40 py-1.5 text-xs text-stamp hover:border-stamp disabled:opacity-40">{busyUnassign?<Loader2 className="animate-spin" size={14}/>:<Trash2 size={14}/>}Remove Assignment</button>
+  </div>
+  <div>
+   <p className="label-mono mb-1 text-ink/40">Reassign to a different portfolio</p>
+   <AssignRow onAssign={onAssign} pick={pick} setPick={setPick} committeeOptions={committeeOptions} availablePortfolios={availablePortfolios} busy={busyAssign} buttonLabel="Reassign"/>
+  </div>
  </div>);
 }
 
@@ -45,8 +64,8 @@ export default function Admin(){
  const [regs,setRegs]=useState([]);
  const [portfolios,setPortfolios]=useState({});
  const [picks,setPicks]=useState({});
- const [loading,setLoading]=useState(true);
  const [busy,setBusy]=useState(null);
+ const [loading,setLoading]=useState(true);
  const [editing,setEditing]=useState(null);
  const [editDraft,setEditDraft]=useState({});
 
@@ -66,24 +85,35 @@ export default function Admin(){
  if(loading) return <div className="section flex justify-center"><Loader2 className="animate-spin text-ink" size={28}/></div>;
 
  const committeesWithPortfolios=Object.keys(portfolios);
+ const rowKey=(reg,delegateIndex)=>delegateIndex==null?reg.id:`${reg.id}-${delegateIndex}`;
  const setPick=(key,patch)=>setPicks(p=>({...p,[key]:{...p[key],...patch}}));
 
  const assign=async(reg,delegateIndex=null)=>{
-  const key=delegateIndex==null?reg.id:`${reg.id}-${delegateIndex}`;
-  const pick=picks[key];
+  const rk=rowKey(reg,delegateIndex);
+  const pick=picks[rk];
   if(!pick?.committeeId||!pick?.portfolioId)return;
-  setBusy(key);
+  setBusy(`${rk}:assign`);
   const r=await fetch("/api/admin/assign",{method:"POST",headers:{"Content-Type":"application/json"},
    body:JSON.stringify({registrationId:reg.id,portfolioId:pick.portfolioId,committeeId:pick.committeeId,delegateIndex})});
   if(!r.ok){const err=await r.json().catch(()=>({}));alert("Assign failed: "+(err.error||r.status));}
+  setPicks(p=>({...p,[rk]:{}}));
+  await load();
+  setBusy(null);
+ };
+ const unassign=async(reg,delegateIndex=null,portfolioId=null)=>{
+  const rk=rowKey(reg,delegateIndex);
+  setBusy(`${rk}:unassign`);
+  const r=await fetch("/api/admin/unassign",{method:"POST",headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({registrationId:reg.id,portfolioId,delegateIndex})});
+  if(!r.ok){const err=await r.json().catch(()=>({}));alert("Remove failed: "+(err.error||r.status));}
   await load();
   setBusy(null);
  };
  const markPaid=async(reg,delegateIndex=null,portfolioId=null)=>{
-  const key=delegateIndex==null?reg.id:`${reg.id}-${delegateIndex}`;
-  setBusy(key);
+  const rk=rowKey(reg,delegateIndex);
+  setBusy(`${rk}:paid`);
   const r=await fetch("/api/admin/mark-paid",{method:"POST",headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({registrationId:reg.id,portfolioId:portfolioId||reg.portfolio_id,delegateIndex})});
+   body:JSON.stringify({registrationId:reg.id,portfolioId,delegateIndex})});
   if(!r.ok){const err=await r.json().catch(()=>({}));alert("Mark as paid failed: "+(err.error||r.status));}
   await load();
   setBusy(null);
@@ -98,8 +128,7 @@ export default function Admin(){
   setEditing(reg.id);
  };
  const saveEdit=async reg=>{
-  const key=`edit-${reg.id}`;
-  setBusy(key);
+  setBusy(`edit-${reg.id}`);
   const isDelegation=reg.type==="delegation";
   const patch={name:editDraft.name,institution:editDraft.institution,email:editDraft.email};
   if(!isDelegation){patch.experience=editDraft.experience;patch.experienceDetail=editDraft.experienceDetail;patch.awards=editDraft.awards;}
@@ -112,8 +141,7 @@ export default function Admin(){
  };
  const deleteReg=async reg=>{
   if(!confirm(`Delete registration for "${reg.name||"this entry"}"? This cannot be undone, and will free up any portfolios assigned to them.`))return;
-  const key=`delete-${reg.id}`;
-  setBusy(key);
+  setBusy(`delete-${reg.id}`);
   const r=await fetch("/api/admin/delete",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({registrationId:reg.id})});
   if(!r.ok){const err=await r.json().catch(()=>({}));alert("Delete failed: "+(err.error||r.status));}
   await load();
@@ -129,13 +157,15 @@ export default function Admin(){
  };
 
  return(<>
- <PageHeader eyebrow="Internal Use Only" title="Admin Console" sub="Assign portfolios and track registrations — reads and writes your real Supabase database."/>
+ <PageHeader eyebrow="Internal Use Only" title="Admin Console" sub="Assign, reassign, unassign or edit registrations — reads and writes your real Supabase database."/>
  <div className="section max-w-5xl space-y-5">
   {regs.length===0&&<p className="font-mono text-sm text-ink/50">No registrations yet.</p>}
   {regs.map(reg=>{
    const committee=committees.find(c=>c.id===reg.committee_id);
    const portfolio=reg.committee_id?portfolios[reg.committee_id]?.find(p=>p.id===reg.portfolio_id):null;
    const isDelegation=reg.type==="delegation";
+   const indivStatus=reg.status==="new"?"new":reg.status==="assigned"?"pending":"confirmed";
+   const indivRk=rowKey(reg,null);
    return(
     <div key={reg.id} className="border-2 border-ink/15 bg-paper p-5">
      <div className="flex flex-wrap items-start justify-between gap-3">
@@ -181,34 +211,32 @@ export default function Admin(){
       </div>
      </div>
 
-     {!isDelegation&&reg.status==="new"&&(
+     {!isDelegation&&(
       <div className="mt-4 border-t-2 border-dashed border-ink/15 pt-4">
-       <AssignRow
-        onAssign={()=>assign(reg)}
-        pick={picks[reg.id]||{}}
-        setPick={patch=>setPick(reg.id,patch)}
+       <AssignmentPanel
+        status={indivStatus}
+        label={`${portfolio?.name||"—"} — ${committee?.abbr||"—"}`}
+        pick={picks[indivRk]||{}}
+        setPick={patch=>setPick(indivRk,patch)}
         committeeOptions={committeesWithPortfolios}
-        availablePortfolios={(picks[reg.id]?.committeeId?portfolios[picks[reg.id].committeeId]:[])?.filter(p=>p.status==="available")}
-        busy={busy===reg.id}
+        availablePortfolios={(picks[indivRk]?.committeeId?portfolios[picks[indivRk].committeeId]:[])?.filter(p=>p.status==="available")}
+        onAssign={()=>assign(reg)}
+        onUnassign={()=>unassign(reg,null,reg.portfolio_id)}
+        onMarkPaid={()=>markPaid(reg,null,reg.portfolio_id)}
+        busyAssign={busy===`${indivRk}:assign`}
+        busyUnassign={busy===`${indivRk}:unassign`}
+        busyPaid={busy===`${indivRk}:paid`}
        />
       </div>
-     )}
-     {!isDelegation&&reg.status==="assigned"&&(
-      <div className="mt-4 flex flex-wrap items-center gap-3 border-t-2 border-dashed border-ink/15 pt-4">
-       <p className="font-mono text-sm">Assigned: <b>{portfolio?.name}</b> — {committee?.abbr}</p>
-       <button onClick={()=>markPaid(reg)} disabled={busy===reg.id} className="btn-ghost py-2 disabled:opacity-40">{busy===reg.id?<Loader2 className="animate-spin" size={16}/>:<CheckCircle2 size={16}/>}Mark as Paid</button>
-      </div>
-     )}
-     {!isDelegation&&reg.status==="confirmed"&&committee&&(
-      <p className="mt-4 border-t-2 border-dashed border-ink/15 pt-4 font-mono text-sm text-ink/60">Confirmed: {portfolio?.name} — {committee.abbr}</p>
      )}
 
      {isDelegation&&(
       <div className="mt-4 space-y-4 border-t-2 border-dashed border-ink/15 pt-4">
        {(reg.preferences||[]).map((d,i)=>{
-        const key=`${reg.id}-${i}`;
+        const rk=rowKey(reg,i);
         const assignedCommittee=d.assigned&&committees.find(c=>c.id===d.assigned.committeeId);
         const assignedPortfolio=d.assigned&&portfolios[d.assigned.committeeId]?.find(p=>p.id===d.assigned.portfolioId);
+        const dStatus=!d.assigned?"new":d.assigned.status;
         return(
          <div key={i} className="border-2 border-ink/10 p-3">
           <p className="font-serif font-bold">{d.name||`Delegate ${i+1}`}</p>
@@ -217,25 +245,22 @@ export default function Admin(){
           <ol className="mt-1 space-y-0.5 font-mono text-xs text-ink/60">
            {(d.prefs||[]).map((p,j)=><li key={j}>{j+1}. {p.committee} — {(p.portfolios||[]).filter(Boolean).join(" / ")||"(no portfolios chosen)"}</li>)}
           </ol>
-          {!d.assigned?(
-           <div className="mt-2">
-            <AssignRow
-             onAssign={()=>assign(reg,i)}
-             pick={picks[key]||{}}
-             setPick={patch=>setPick(key,patch)}
-             committeeOptions={committeesWithPortfolios}
-             availablePortfolios={(picks[key]?.committeeId?portfolios[picks[key].committeeId]:[])?.filter(p=>p.status==="available")}
-             busy={busy===key}
-            />
-           </div>
-          ):d.assigned.status==="pending"?(
-           <div className="mt-2 flex items-center gap-2">
-            <p className="font-mono text-xs">Assigned: {assignedPortfolio?.name} — {assignedCommittee?.abbr}</p>
-            <button onClick={()=>markPaid(reg,i,d.assigned.portfolioId)} disabled={busy===key} className="btn-ghost py-1.5 text-xs disabled:opacity-40">{busy===key?<Loader2 className="animate-spin" size={14}/>:<CheckCircle2 size={14}/>}Mark Paid</button>
-           </div>
-          ):(
-           <p className="mt-2 font-mono text-xs text-ink/60">Confirmed: {assignedPortfolio?.name} — {assignedCommittee?.abbr}</p>
-          )}
+          <div className="mt-2">
+           <AssignmentPanel
+            status={dStatus}
+            label={`${assignedPortfolio?.name||"—"} — ${assignedCommittee?.abbr||"—"}`}
+            pick={picks[rk]||{}}
+            setPick={patch=>setPick(rk,patch)}
+            committeeOptions={committeesWithPortfolios}
+            availablePortfolios={(picks[rk]?.committeeId?portfolios[picks[rk].committeeId]:[])?.filter(p=>p.status==="available")}
+            onAssign={()=>assign(reg,i)}
+            onUnassign={()=>unassign(reg,i,d.assigned?.portfolioId)}
+            onMarkPaid={()=>markPaid(reg,i,d.assigned?.portfolioId)}
+            busyAssign={busy===`${rk}:assign`}
+            busyUnassign={busy===`${rk}:unassign`}
+            busyPaid={busy===`${rk}:paid`}
+           />
+          </div>
          </div>
         );
        })}

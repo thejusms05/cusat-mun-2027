@@ -12,6 +12,16 @@ export async function POST(req) {
   const {data: reg} = await supabase.from("registrations").select("*").eq("id", registrationId).single();
   if (!reg) return NextResponse.json({error: "Registration not found."}, {status: 404});
 
+  const oldPortfolioId = (delegateIndex === undefined || delegateIndex === null)
+    ? reg.portfolio_id
+    : reg.preferences?.[delegateIndex]?.assigned?.portfolioId || null;
+
+  if (oldPortfolioId && oldPortfolioId !== portfolioId) {
+    await supabase.from("portfolios")
+      .update({status: "available", assigned_registration_id: null, assigned_delegate_index: null})
+      .eq("id", oldPortfolioId);
+  }
+
   const {error: ePortfolio} = await supabase.from("portfolios")
     .update({status: "pending", assigned_registration_id: registrationId, assigned_delegate_index: delegateIndex ?? null})
     .eq("id", portfolioId);
