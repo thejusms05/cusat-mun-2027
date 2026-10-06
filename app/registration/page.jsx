@@ -8,6 +8,7 @@ import PageHeader from "@/components/PageHeader";
 const SCHOOL_COMMITTEE="UNODC";
 const UNIVERSITY_COMMITTEES=committees.map(c=>c.abbr).filter(a=>!["UNODC","IP Journalism","IP Photojournalism"].includes(a));
 const idFor=abbr=>committees.find(c=>c.abbr===abbr)?.id;
+const RANK_LABELS=["1st choice","2nd choice","3rd choice"];
 
 const CATEGORIES=[
  {id:"school_individual",label:"School — Individual Delegate",school:true,group:false},
@@ -16,49 +17,56 @@ const CATEGORIES=[
  {id:"university_delegation",label:"University — Delegation",school:false,group:true},
 ];
 
-const emptyPrefs=school=>school?[{committee:SCHOOL_COMMITTEE,portfolio:""}]:[{committee:"",portfolio:""},{committee:"",portfolio:""},{committee:"",portfolio:""}];
+const emptyPrefs=school=>school?[{committee:SCHOOL_COMMITTEE,portfolios:["","",""]}]:[{committee:"",portfolios:["","",""]},{committee:"",portfolios:["","",""]},{committee:"",portfolios:["","",""]}];
 
-function PrefsBlock({school,portfolios,value,onChange}){
- const availFor=abbr=>portfolios.filter(p=>p.committee_id===idFor(abbr)&&p.status==="available");
- if(school){
-  const v=value[0]||{committee:SCHOOL_COMMITTEE,portfolio:""};
-  const avail=availFor(SCHOOL_COMMITTEE);
-  return(<div>
-   <label className="label-mono mb-1 block text-ink/60">Preferred Portfolio — UNODC</label>
-   <select value={v.portfolio} onChange={e=>onChange([{committee:SCHOOL_COMMITTEE,portfolio:e.target.value}])} className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-2.5 font-mono text-sm focus:border-ink">
-    <option value="">Select…</option>
-    {avail.map(p=><option key={p.id} value={p.name}>{p.name}</option>)}
-    {avail.length===0&&<option disabled>No portfolios currently available</option>}
+function PortfolioRanks({committeeAbbr,portfolios,value,onChange}){
+ const avail=portfolios.filter(p=>p.committee_id===idFor(committeeAbbr)&&p.status==="available");
+ return(<div className="grid gap-2 sm:grid-cols-3">
+  {[0,1,2].map(i=>(
+   <select key={i} value={value[i]||""} onChange={e=>{const next=[...value];next[i]=e.target.value;onChange(next);}} disabled={!committeeAbbr} className="border-0 border-b-2 border-ink/25 bg-transparent px-1 py-2 font-mono text-xs focus:border-ink disabled:opacity-40">
+    <option value="">{RANK_LABELS[i]}…</option>
+    {avail.filter(p=>p.name===value[i]||!value.includes(p.name)).map(p=><option key={p.id} value={p.name}>{p.name}</option>)}
+    {avail.length===0&&<option disabled>No portfolios available</option>}
    </select>
+  ))}
+ </div>);
+}
+
+function PrefsBlock({school,portfolios,value,onChange,attempted}){
+ const rowValid=v=>v.committee&&v.portfolios.every(Boolean)&&new Set(v.portfolios).size===v.portfolios.length;
+ if(school){
+  const v=value[0]||{committee:SCHOOL_COMMITTEE,portfolios:["","",""]};
+  return(<div>
+   <label className="label-mono mb-1 block text-ink/60">Preferred Portfolios — UNODC (rank your top 3)</label>
+   <PortfolioRanks committeeAbbr={SCHOOL_COMMITTEE} portfolios={portfolios} value={v.portfolios} onChange={ps=>onChange([{committee:SCHOOL_COMMITTEE,portfolios:ps}])}/>
+   {attempted&&!rowValid(v)&&<p className="mt-1 font-mono text-xs text-stamp">Choose 3 distinct portfolios.</p>}
   </div>);
  }
  const chosen=value.map(v=>v.committee).filter(Boolean);
- return(<div className="space-y-4">
+ return(<div className="space-y-5">
   {value.map((v,i)=>(
    <div key={i}>
     <label className="label-mono mb-1 block text-ink/60">Committee Preference {i+1}</label>
-    <div className="grid gap-2 sm:grid-cols-2">
-     <select value={v.committee} onChange={e=>{const next=[...value];next[i]={committee:e.target.value,portfolio:""};onChange(next);}} className="border-0 border-b-2 border-ink/25 bg-transparent px-1 py-2.5 font-mono text-sm focus:border-ink">
-      <option value="">Select committee…</option>
-      {UNIVERSITY_COMMITTEES.filter(o=>o===v.committee||!chosen.includes(o)).map(o=><option key={o}>{o}</option>)}
-     </select>
-     <select value={v.portfolio} onChange={e=>{const next=[...value];next[i]={...v,portfolio:e.target.value};onChange(next);}} disabled={!v.committee} className="border-0 border-b-2 border-ink/25 bg-transparent px-1 py-2.5 font-mono text-sm focus:border-ink disabled:opacity-40">
-      <option value="">Portfolio preference…</option>
-      {availFor(v.committee).map(p=><option key={p.id} value={p.name}>{p.name}</option>)}
-      {v.committee&&availFor(v.committee).length===0&&<option disabled>No portfolios currently available</option>}
-     </select>
-    </div>
+    <select value={v.committee} onChange={e=>{const next=[...value];next[i]={committee:e.target.value,portfolios:["","",""]};onChange(next);}} className="mb-2 w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-2.5 font-mono text-sm focus:border-ink">
+     <option value="">Select committee…</option>
+     {UNIVERSITY_COMMITTEES.filter(o=>o===v.committee||!chosen.includes(o)).map(o=><option key={o}>{o}</option>)}
+    </select>
+    {v.committee&&<>
+     <p className="label-mono mb-1 text-ink/40">Rank your top 3 portfolios in {v.committee}</p>
+     <PortfolioRanks committeeAbbr={v.committee} portfolios={portfolios} value={v.portfolios} onChange={ps=>{const next=[...value];next[i]={...v,portfolios:ps};onChange(next);}}/>
+    </>}
+    {attempted&&!rowValid(v)&&<p className="mt-1 font-mono text-xs text-stamp">Choose a committee and 3 distinct portfolios.</p>}
    </div>
   ))}
  </div>);
 }
 
-function DelegateBlock({index,delegate,school,portfolios,onChange}){
+function DelegateBlock({index,delegate,school,portfolios,onChange,attempted}){
  return(<div className="border-2 border-dashed border-ink/20 p-4">
   <p className="label-mono mb-2 text-ink/60">Delegate {index+1}</p>
   <label className="label-mono mb-1 block text-ink/60">Delegate Name</label>
   <input value={delegate.name} onChange={e=>onChange({...delegate,name:e.target.value})} className="w-full border-0 border-b-2 border-ink/25 bg-transparent px-1 py-2.5 font-mono text-sm focus:border-ink"/>
-  <div className="mt-4"><PrefsBlock school={school} portfolios={portfolios} value={delegate.prefs} onChange={prefs=>onChange({...delegate,prefs})}/></div>
+  <div className="mt-4"><PrefsBlock school={school} portfolios={portfolios} value={delegate.prefs} onChange={prefs=>onChange({...delegate,prefs})} attempted={attempted}/></div>
  </div>);
 }
 
@@ -91,7 +99,7 @@ export default function Registration(){
  },[size,isSchool]);
 
  const basicValid=basic.name.trim()&&basic.inst.trim()&&/^\S+@\S+\.\S+$/.test(basic.contact.trim());
- const prefsValid=list=>list.every(x=>x.committee&&x.portfolio);
+ const prefsValid=list=>list.every(x=>x.committee&&x.portfolios.every(Boolean)&&new Set(x.portfolios).size===x.portfolios.length);
  const individualValid=!isGroup?(exp.exp&&(exp.exp==="0"||exp.expDetail.trim())&&prefsValid(prefs)):true;
  const sizeNum=parseInt(size)||0;
  const groupValid=isGroup?(sizeNum>=2&&sizeNum<=25&&delegates.length===sizeNum&&delegates.every(d=>d.name.trim()&&prefsValid(d.prefs))):true;
@@ -122,7 +130,7 @@ export default function Registration(){
  <div className="section max-w-2xl">
   <div className="mb-8 flex items-start gap-3 border-2 border-ink/15 bg-paper-dark/40 p-4">
    <Mail size={20} className="mt-0.5 shrink-0 text-ink"/>
-   <p className="font-mono text-sm leading-relaxed text-ink/75">Submit your preferences below — there's nothing to pay right now. Our team reviews every submission, assigns a country or portfolio, and emails you directly with a secure link to complete payment and confirm your seat.</p>
+   <p className="font-mono text-sm leading-relaxed text-ink/75">Submit your preferences below — there's nothing to pay right now. Our team reviews every submission, assigns a country or portfolio, and emails you directly with a secure link to complete payment and confirm your seat. Ranking 3 portfolios per committee gives us a far better chance of matching your top choice.</p>
   </div>
 
   <label className="label-mono mb-2 block text-ink/60">I am registering as a…</label>
@@ -173,7 +181,7 @@ export default function Registration(){
        <textarea rows={3} value={exp.awards} onChange={e=>setExp({...exp,awards:e.target.value})} className={inputCls(false)}/>
       </div>
      </>}
-     <PrefsBlock school={isSchool} portfolios={portfolios} value={prefs} onChange={setPrefs}/>
+     <PrefsBlock school={isSchool} portfolios={portfolios} value={prefs} onChange={setPrefs} attempted={attempted}/>
     </>}
 
     {isGroup&&<>
@@ -183,7 +191,7 @@ export default function Registration(){
       {bad(sizeNum<2)&&<p className="mt-1 font-mono text-xs text-stamp">A delegation needs at least 2 delegates.</p>}
       {bad(sizeNum>25)&&<p className="mt-1 font-mono text-xs text-stamp">For delegations over 25, please email Delegate Affairs directly.</p>}
      </div>
-     {delegates.map((d,i)=><DelegateBlock key={i} index={i} delegate={d} school={isSchool} portfolios={portfolios} onChange={nd=>setDelegates(prev=>prev.map((x,j)=>j===i?nd:x))}/>)}
+     {delegates.map((d,i)=><DelegateBlock key={i} index={i} delegate={d} school={isSchool} portfolios={portfolios} onChange={nd=>setDelegates(prev=>prev.map((x,j)=>j===i?nd:x))} attempted={attempted}/>)}
     </>}
 
     <button disabled={state==="loading"} className="btn-gold ticket w-full disabled:opacity-70">{state==="loading"?<><Loader2 className="animate-spin" size={18}/>Submitting…</>:<><Send size={18}/>Submit Registration</>}</button>

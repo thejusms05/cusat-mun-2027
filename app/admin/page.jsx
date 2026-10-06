@@ -114,7 +114,7 @@ export default function Admin(){
        {!isDelegation&&reg.awards&&<p className="font-mono text-xs text-ink/60">Awards: {reg.awards}</p>}
        {!isDelegation&&reg.preferences?.length>0&&
         <ol className="mt-1 space-y-0.5 font-mono text-xs text-ink/60">
-         {reg.preferences.map((p,i)=><li key={i}>{i+1}. {p.committee} — {p.portfolio||"(no portfolio chosen)"}</li>)}
+         {reg.preferences.map((p,i)=><li key={i}>{i+1}. {p.committee} — {(p.portfolios||[]).filter(Boolean).join(" / ")||"(no portfolios chosen)"}</li>)}
         </ol>}
       </div>
       <StatusBadge status={isDelegation?delegationBadgeStatus(reg):(reg.status==="new"?"available":reg.status==="assigned"?"pending":"confirmed")}/>
@@ -152,7 +152,7 @@ export default function Admin(){
          <div key={i} className="border-2 border-ink/10 p-3">
           <p className="font-serif font-bold">{d.name||`Delegate ${i+1}`}</p>
           <ol className="mt-1 space-y-0.5 font-mono text-xs text-ink/60">
-           {(d.prefs||[]).map((p,j)=><li key={j}>{j+1}. {p.committee} — {p.portfolio||"(no portfolio chosen)"}</li>)}
+           {(d.prefs||[]).map((p,j)=><li key={j}>{j+1}. {p.committee} — {(p.portfolios||[]).filter(Boolean).join(" / ")||"(no portfolios chosen)"}</li>)}
           </ol>
           {!d.assigned?(
            <div className="mt-2">
