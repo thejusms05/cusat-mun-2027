@@ -5,7 +5,7 @@ import {useId} from "react";
 // throughout the site as a decorative "official stamp" motif.
 export default function Stamp({text="CUSAT MUN",sub="2027",rotate=-8,size=104,tone="ink",className=""}){
  const id=useId().replace(/[^a-zA-Z0-9]/g,"");
- const col=tone==="stamp"?"#B23A2E":tone==="gold"?"#B8902F":"#1B2A4A";
+ const col=tone==="stamp"?"#B23A2E":tone==="gold"?"#B8902F":"#5E1E2B";
  return (
   <div className={`stamp ${className}`} style={{"--rot":`${rotate}deg`,color:col}}>
    <svg viewBox="0 0 120 120" width={size} height={size} role="img" aria-label={`${text} ${sub}`}>

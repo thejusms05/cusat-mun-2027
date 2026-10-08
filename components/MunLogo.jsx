@@ -8,10 +8,10 @@ import Image from "next/image";
 // theme="dark" (navy ink) is for light/paper backgrounds; theme="light"
 // (white) is for navy backgrounds.
 const FILES={
- dark:{icon:"/images/logo-navy-transparent-icon.png",full:"/images/logo-navy-transparent-full.png"},
- light:{icon:"/images/logo-white-transparent-icon.png",full:"/images/logo-white-transparent-full.png"},
+ dark:{icon:"/images/logo-oxblood-icon.png",full:"/images/logo-oxblood-full.png"},
+ light:{icon:"/images/logo-plaster-icon.png",full:"/images/logo-plaster-full.png"},
 };
-const RATIO={icon:3936/2739,full:3936/3282};
+const RATIO={icon:1175/825,full:1175/985};
 
 export default function MunLogo({size=40,theme="dark",variant="icon",className="",priority=false}){
  const h=size, w=Math.round(size*RATIO[variant]);

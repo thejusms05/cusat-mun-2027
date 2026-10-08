@@ -53,6 +53,6 @@ export function Footer(){
     <div className="mt-4 flex gap-2">{s.map(([I,l])=><a key={l} href="#" aria-label={l} className="rounded-sm border-2 border-paper/20 p-2 transition hover:border-gold hover:text-gold"><I size={18}/></a>)}</div>
    </div>
   </div>
-  <p className="label-mono border-t border-paper/10 py-5 text-center text-paper/40">File Closed · © 2027 CUSAT MUN · All Rights Reserved</p>
+  <p className="label-mono border-t border-paper/10 py-5 text-center text-paper/40">Deck Sealed · © 2027 CUSAT MUN · All Rights Reserved</p>
  </footer>);
 }

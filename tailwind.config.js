@@ -1,9 +1,11 @@
 module.exports={content:["./app/**/*.{js,jsx}","./components/**/*.{js,jsx}"],theme:{extend:{
 colors:{
- ink:{DEFAULT:"#1B2A4A",700:"#24375E",900:"#0F1B33"},
- paper:{DEFAULT:"#F4EEDF",dark:"#E9DFC5",deep:"#ECE2C9"},
+ ink:{DEFAULT:"#5E1E2B",700:"#7A2E3D",900:"#202020"},
+ paper:{DEFAULT:"#DADCDD",dark:"#D2BCA8",deep:"#C7A98F"},
  stamp:{DEFAULT:"#B23A2E",light:"#C9544A"},
  gold:{DEFAULT:"#B8902F",light:"#D1AC52"},
+ obsidian:"#202020",
+ concrete:"#9C9D9B",
 },
 fontFamily:{serif:["var(--font-serif)","Georgia","serif"],sans:["var(--font-sans)","system-ui","sans-serif"],mono:["var(--font-mono)","ui-monospace","monospace"]},
 }},plugins:[]}

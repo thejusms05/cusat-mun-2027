@@ -148,7 +148,7 @@ export default function Registration(){
  const inputCls=c=>`w-full border-0 border-b-2 bg-transparent px-1 py-2.5 font-mono text-sm outline-none transition ${c?"border-stamp anim-shake":"border-ink/25 hover:border-ink/50 focus:border-ink"}`;
 
  return(<>
- <PageHeader eyebrow="Intake Form" title="Registration" sub="Open to school and college delegations, and to individual delegates. School teams and individuals register under UNODC. No payment is needed to apply — see how it works below."/>
+ <PageHeader eyebrow="Take Your Seat" title="Registration" sub="Open to school and college delegations, and to individual delegates. School teams and individuals register under UNODC. No payment is needed to apply — see how it works below."/>
  <div className="section max-w-2xl">
   <div className="mb-8 flex items-start gap-3 border-2 border-ink/15 bg-paper-dark/40 p-4">
    <Mail size={20} className="mt-0.5 shrink-0 text-ink"/>
