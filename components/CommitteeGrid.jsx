@@ -27,8 +27,8 @@ export default function CommitteeGrid(){
      <div className="label-mono absolute -left-2 -top-2 -rotate-6 border-2 border-stamp px-2 py-0.5 text-stamp">Classified</div>
      <button aria-label="Close" onClick={()=>setSel(null)} className="absolute right-0 top-0 rounded-sm border-2 border-ink/20 p-1.5 transition hover:bg-ink/5"><X size={18}/></button>
      <div className="flex items-start gap-4 pt-10">
-      <div className="relative aspect-[700/980] h-24 shrink-0 overflow-hidden rounded-sm shadow-lg ring-1 ring-ink/15">
-       <Image src={`/images/cards/${sel.id}.jpg`} alt={`${sel.abbr} card`} fill className="object-cover"/>
+      <div className="card-shadow relative aspect-[700/980] h-24 shrink-0">
+       <Image src={`/images/cards/${sel.id}.webp`} alt={`${sel.abbr} card`} fill className="object-contain"/>
       </div>
       <div><h2 className="text-3xl font-bold">{sel.abbr}</h2><p className="text-ink/70">{sel.name}</p>
        <p className="label-mono mt-1 inline-flex items-center gap-1.5 border border-ink/20 px-2 py-1 text-ink/60"><GraduationCap size={13} className="text-stamp"/>{sel.level}</p></div>

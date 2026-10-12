@@ -44,7 +44,8 @@ h1,h2,h3{@apply font-serif}
 .flip-card{perspective:1400px}
 .flip-inner{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}
 .flip-card.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:.5rem;overflow:hidden}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.card-shadow{filter:drop-shadow(0 10px 14px rgba(32,32,32,.38))}
 .flip-front{transform:rotateY(180deg)}
 @media (prefers-reduced-motion:reduce){.flip-inner{transition:none}}
 
