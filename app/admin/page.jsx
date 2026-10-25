@@ -1,6 +1,6 @@
 "use client";
 import {useEffect,useState} from "react";
-import {Lock,CheckCircle2,UserPlus,AlertTriangle,Loader2,Pencil,Trash2,Save,X} from "lucide-react";
+import {Lock,CheckCircle2,UserPlus,AlertTriangle,Loader2,Pencil,Trash2,Save,X,Mail,Eye} from "lucide-react";
 import {committees} from "@/lib/data";
 import PageHeader from "@/components/PageHeader";
 import StatusBadge from "@/components/StatusBadge";
@@ -68,6 +68,7 @@ export default function Admin(){
  const [loading,setLoading]=useState(true);
  const [editing,setEditing]=useState(null);
  const [editDraft,setEditDraft]=useState({});
+ const [emailPreview,setEmailPreview]=useState(null);
 
  const load=async()=>{
   setLoading(true);
@@ -148,6 +149,28 @@ export default function Admin(){
   setBusy(null);
  };
 
+ const hasAssignment=reg=>reg.type==="delegation"?(reg.preferences||[]).some(d=>d.assigned):!!(reg.committee_id&&reg.portfolio_id);
+ const postEmail=(reg,preview)=>fetch("/api/admin/send-allotment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({registrationId:reg.id,preview})});
+ const previewEmail=async reg=>{
+  setBusy(`preview-${reg.id}`);
+  const r=await postEmail(reg,true);
+  const j=await r.json().catch(()=>({}));
+  setBusy(null);
+  if(!r.ok){alert(j.error||"Could not build the preview.");return;}
+  setEmailPreview({subject:j.subject,html:j.html,problems:j.problems||[],to:reg.email});
+ };
+ const sendEmail=async reg=>{
+  const when=reg.allotment_email_sent_at?new Date(reg.allotment_email_sent_at).toLocaleString():null;
+  if(!confirm(when?`An email was already sent on ${when}. Send it again to ${reg.email}?`:`Send the allotment email to ${reg.email}?`))return;
+  setBusy(`email-${reg.id}`);
+  const r=await postEmail(reg,false);
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)alert("Send failed: "+(j.error||r.status));
+  else alert("Email sent to "+reg.email);
+  await load();
+  setBusy(null);
+ };
+
  const delegationBadgeStatus=reg=>{
   const list=reg.preferences||[];
   const assigned=list.filter(d=>d.assigned);
@@ -157,7 +180,7 @@ export default function Admin(){
  };
 
  return(<>
- <PageHeader eyebrow="Internal Use Only" title="Admin Console" sub="Assign, reassign, unassign or edit registrations — reads and writes your real Supabase database."/>
+ <PageHeader eyebrow="Internal Use Only" title="Admin Console" sub="Assign, reassign, unassign, edit and email registrations — reads and writes your real Supabase database."/>
  <div className="section max-w-5xl space-y-5">
   {regs.length===0&&<p className="font-mono text-sm text-ink/50">No registrations yet.</p>}
   {regs.map(reg=>{
@@ -210,6 +233,14 @@ export default function Admin(){
        </>}
       </div>
      </div>
+
+     {hasAssignment(reg)&&(
+      <div className="mt-4 flex flex-wrap items-center gap-2 border-t-2 border-dashed border-ink/15 pt-4">
+       <button onClick={()=>previewEmail(reg)} disabled={busy===`preview-${reg.id}`} className="btn-ghost py-1.5 text-xs disabled:opacity-40">{busy===`preview-${reg.id}`?<Loader2 className="animate-spin" size={14}/>:<Eye size={14}/>}Preview email</button>
+       <button onClick={()=>sendEmail(reg)} disabled={busy===`email-${reg.id}`} className="btn-gold py-1.5 text-xs disabled:opacity-40">{busy===`email-${reg.id}`?<Loader2 className="animate-spin" size={14}/>:<Mail size={14}/>}{reg.allotment_email_sent_at?"Resend allotment email":"Send allotment email"}</button>
+       <span className="label-mono text-ink/50">{reg.allotment_email_sent_at?`Last sent ${new Date(reg.allotment_email_sent_at).toLocaleString()}`:"Not sent yet"}</span>
+      </div>
+     )}
 
      {!isDelegation&&(
       <div className="mt-4 border-t-2 border-dashed border-ink/15 pt-4">
@@ -270,5 +301,25 @@ export default function Admin(){
    );
   })}
  </div>
+ {emailPreview&&(
+  <div className="fixed inset-0 z-[70] flex items-center justify-center bg-ink-900/80 p-3 anim-fade" onClick={()=>setEmailPreview(null)}>
+   <div onClick={e=>e.stopPropagation()} className="flex max-h-[94vh] w-full max-w-2xl flex-col border-2 border-ink/20 bg-paper">
+    <div className="flex items-start justify-between gap-3 border-b-2 border-ink/15 p-4">
+     <div>
+      <p className="label-mono text-ink/50">To: {emailPreview.to}</p>
+      <p className="font-serif text-lg font-bold">{emailPreview.subject}</p>
+     </div>
+     <button aria-label="Close" onClick={()=>setEmailPreview(null)} className="rounded-sm border-2 border-ink/20 p-1.5 hover:bg-ink/5"><X size={18}/></button>
+    </div>
+    {emailPreview.problems.length>0&&(
+     <div className="border-b-2 border-stamp/40 bg-stamp/10 p-3">
+      <p className="label-mono mb-1 flex items-center gap-1.5 text-stamp"><AlertTriangle size={13}/>Fix before sending</p>
+      <ul className="list-disc space-y-1 pl-5 font-mono text-xs text-stamp">{emailPreview.problems.map((x,i)=><li key={i}>{x}</li>)}</ul>
+     </div>
+    )}
+    <iframe title="Email preview" sandbox="" srcDoc={emailPreview.html} className="min-h-[60vh] w-full flex-1 bg-white"/>
+   </div>
+  </div>
+ )}
  </>);
 }
