@@ -1,11 +1,10 @@
 "use client";
 import {useId} from "react";
 
-// A rotated, ink-stamp style circular badge with curved text — used
-// throughout the site as a decorative "official stamp" motif.
+// A rotated, ink-stamp style circular badge with curved text.
 export default function Stamp({text="CUSAT MUN",sub="2027",rotate=-8,size=104,tone="ink",className=""}){
  const id=useId().replace(/[^a-zA-Z0-9]/g,"");
- const col=tone==="stamp"?"#B23A2E":tone==="gold"?"#B8902F":"#5E1E2B";
+ const col=tone==="stamp"?"#A82A1E":tone==="gold"?"#D4AC47":"#1B4A2E";
  return (
   <div className={`stamp ${className}`} style={{"--rot":`${rotate}deg`,color:col}}>
    <svg viewBox="0 0 120 120" width={size} height={size} role="img" aria-label={`${text} ${sub}`}>

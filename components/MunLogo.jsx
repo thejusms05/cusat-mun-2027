@@ -1,15 +1,11 @@
 import Image from "next/image";
 
-// The real CUSAT MUN emblem (your design), cropped two ways:
-//  - "icon": just the circular seal + laurel, no wordmark — for small spots
-//    (navbar, footer, favicon) where the type would be illegible anyway.
-//  - "full": the complete lockup with "CUSAT MUN / MODEL UNITED NATIONS" —
-//    for large, legible placements (the hero watermark).
-// theme="dark" (navy ink) is for light/paper backgrounds; theme="light"
-// (white) is for navy backgrounds.
+// theme="dark"  -> maroon logo, for light (kasavu cream) backgrounds
+// theme="light" -> gold logo, for deep-green backgrounds
+// variant="icon" -> seal + laurel only;  variant="full" -> with the CUSAT MUN wordmark
 const FILES={
  dark:{icon:"/images/logo-oxblood-icon.png",full:"/images/logo-oxblood-full.png"},
- light:{icon:"/images/logo-plaster-icon.png",full:"/images/logo-plaster-full.png"},
+ light:{icon:"/images/logo-gold-icon.png",full:"/images/logo-gold-full.png"},
 };
 const RATIO={icon:1175/825,full:1175/985};
 
