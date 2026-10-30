@@ -2,19 +2,35 @@
 html{scroll-behavior:smooth}
 body{@apply font-sans text-ink bg-paper antialiased}
 h1,h2,h3{@apply font-serif}
-::selection{background:#C49A2C;color:#12261A}
+::selection{background:#C28A36;color:#0F1C0E}
 
-.grain{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:.045;mix-blend-mode:multiply;
- background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
- background-size:160px 160px}
+/* Handloom-cotton texture laid over the whole site (neutral grey, blended) */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.55;mix-blend-mode:overlay;
+ background-image:url(/images/tex-overlay.webp);background-size:512px 512px}
+@media (max-width:640px){.grain{opacity:.4}}
 
-/* Kasavu: cream fabric with a gold zari border and little diamonds */
-.kasavu-band{height:16px;width:100%;background-color:#F7EFDC;background-repeat:repeat-x;background-size:28px 16px;
- background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='16' viewBox='0 0 28 16'><rect width='28' height='16' fill='%23F7EFDC'/><rect y='1' width='28' height='2' fill='%23C49A2C'/><rect y='13' width='28' height='2' fill='%23C49A2C'/><path d='M14 3 L19 8 L14 13 L9 8 Z' fill='%23C49A2C'/><path d='M14 5.5 L16.5 8 L14 10.5 L11.5 8 Z' fill='%23A82A1E'/></svg>")}
+/* Kasavu: cream fabric, gold zari border, little diamonds */
+.kasavu-band{height:16px;width:100%;background-color:#F0E2BC;background-repeat:repeat-x;background-size:28px 16px;
+ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='16' viewBox='0 0 28 16'><rect width='28' height='16' fill='%23F0E2BC'/><rect y='1' width='28' height='2' fill='%23C28A36'/><rect y='13' width='28' height='2' fill='%23C28A36'/><path d='M14 3 L19 8 L14 13 L9 8 Z' fill='%23C28A36'/><path d='M14 5.5 L16.5 8 L14 10.5 L11.5 8 Z' fill='%23A3240C'/></svg>")}
+
+/* The design team's artwork, used as backgrounds */
+.hero-art{background-image:url(/images/hero-portrait.webp);background-repeat:no-repeat;background-size:100% auto;background-position:top center;background-color:#0F1C0E}
+.hero-shade{background-image:linear-gradient(to bottom,rgba(15,28,14,0) 0,rgba(15,28,14,0) 52vw,rgba(15,28,14,.55) 80vw,rgba(15,28,14,.93) 100vw,#0F1C0E 120vw)}
+.hero-pad{padding-top:80vw}
+@media (min-width:1024px){
+ .hero-art{background-image:url(/images/hero-landscape.webp);background-size:cover;background-position:right center}
+ .hero-shade{background-image:linear-gradient(90deg,rgba(15,28,14,.94) 0%,rgba(15,28,14,.82) 34%,rgba(15,28,14,.3) 58%,rgba(15,28,14,0) 72%),linear-gradient(to bottom,rgba(15,28,14,0) 80%,rgba(15,28,14,.6) 100%)}
+ .hero-pad{padding-top:6rem}
+}
+/* Page-header crops: always keep the face out of frame */
+.art-band-a,.art-band-b{background-image:url(/images/hero-landscape.webp);background-size:210% auto;background-position:0% 18%}
+@media (min-width:640px){.art-band-b{background-image:url(/images/hero-portrait.webp);background-size:cover;background-position:50% 100%}}
+@media (min-width:1280px){.art-band-a{background-size:170% auto}}
+.art-foot{background-image:url(/images/hero-portrait.webp);background-size:cover;background-position:50% 100%}
 
 @layer components{
 .btn{@apply inline-flex items-center justify-center gap-2 rounded-sm px-6 py-3 font-semibold tracking-wide transition duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold}
-.btn-gold{@apply btn relative overflow-hidden border-2 border-ink bg-gold text-ink hover:-translate-y-0.5 hover:bg-gold-light}
+.btn-gold{@apply btn relative overflow-hidden border-2 border-ink-900 bg-gold-light text-ink-900 hover:-translate-y-0.5 hover:bg-gold}
 .btn-ink{@apply btn border-2 border-ink bg-ink text-paper hover:bg-ink-700}
 .btn-ghost{@apply btn border-2 border-ink/30 text-ink hover:border-ink hover:bg-ink/5}
 .btn-gold::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s}
@@ -25,16 +41,16 @@ h1,h2,h3{@apply font-serif}
 .section{@apply mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-20}
 
 .ticket{position:relative}
-.ticket::before,.ticket::after{content:"";position:absolute;top:50%;width:18px;height:18px;background:var(--notch-bg,#F7EFDC);border-radius:50%;transform:translateY(-50%);z-index:1}
+.ticket::before,.ticket::after{content:"";position:absolute;top:50%;width:18px;height:18px;background:var(--notch-bg,#F0E2BC);border-radius:50%;transform:translateY(-50%);z-index:1}
 .ticket::before{left:-9px}
 .ticket::after{right:-9px}
 
-.polaroid{background:#FBF6E8;border:2px solid rgba(196,154,44,.55);border-radius:.25rem;padding:.6rem .6rem 1rem;box-shadow:0 14px 26px -10px rgba(18,38,26,.35),0 1px 0 rgba(18,38,26,.08);transform:rotate(var(--rot,0deg));position:relative;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.polaroid{background:#F4E8C8;border:2px solid rgba(194,138,54,.6);border-radius:.25rem;padding:.6rem .6rem 1rem;box-shadow:0 14px 26px -10px rgba(15,28,14,.4),0 1px 0 rgba(15,28,14,.08);transform:rotate(var(--rot,0deg));position:relative;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
 .polaroid:hover{transform:rotate(0deg) translateY(-6px) scale(1.03)}
-.polaroid-photo{position:relative;aspect-ratio:1/1;overflow:hidden;background:repeating-linear-gradient(135deg,rgba(27,74,46,.07) 0 10px,rgba(27,74,46,.02) 10px 20px)}
-.polaroid-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;color:rgba(27,74,46,.4)}
-.polaroid-caption{margin-top:.55rem;font-family:var(--font-mono);font-style:italic;font-size:.8rem;letter-spacing:.03em;line-height:1.3;text-align:center;color:#1B4A2E}
-.tape{position:absolute;width:54px;height:20px;background:linear-gradient(180deg,rgba(196,154,44,.6),rgba(196,154,44,.4));box-shadow:0 1px 2px rgba(0,0,0,.18);opacity:.9}
+.polaroid-photo{position:relative;aspect-ratio:1/1;overflow:hidden;background:repeating-linear-gradient(135deg,rgba(31,51,23,.08) 0 10px,rgba(31,51,23,.02) 10px 20px)}
+.polaroid-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;color:rgba(31,51,23,.4)}
+.polaroid-caption{margin-top:.55rem;font-family:var(--font-mono);font-style:italic;font-size:.8rem;letter-spacing:.03em;line-height:1.3;text-align:center;color:#1F3317}
+.tape{position:absolute;width:54px;height:20px;background:linear-gradient(180deg,rgba(194,138,54,.65),rgba(194,138,54,.4));box-shadow:0 1px 2px rgba(0,0,0,.18);opacity:.9}
 .tape-tl{top:-10px;left:-12px;transform:rotate(-38deg)}
 .tape-tr{top:-10px;right:-12px;transform:rotate(38deg)}
 .tape-tc{top:-10px;left:50%;transform:translateX(-50%) rotate(-3deg)}
@@ -48,8 +64,8 @@ h1,h2,h3{@apply font-serif}
 .wrap-flap{position:absolute;top:0;bottom:0;width:50.5%;transition:transform .95s cubic-bezier(.2,.8,.2,1),opacity .35s ease .65s;
  background:
   repeating-linear-gradient(100deg,rgba(255,255,255,.07) 0 2px,transparent 2px 14px),
-  linear-gradient(160deg,#4E9546 0%,#2F6B2F 60%,#24562A 100%);
- border:2px solid #1E4A22}
+  linear-gradient(160deg,#5C8A3C 0%,#4A7030 55%,#2F5222 100%);
+ border:2px solid #14230F}
 .wrap-flap.left{left:0;transform-origin:left center}
 .wrap-flap.right{right:0;transform-origin:right center}
 .wrap-open .wrap-flap.left{transform:rotateY(-118deg);opacity:0}
@@ -61,6 +77,8 @@ h1,h2,h3{@apply font-serif}
 @keyframes steam{0%{opacity:0;transform:translateY(5px)}45%{opacity:.75}100%{opacity:0;transform:translateY(-12px)}}
 .flicker{animation:flicker 2.4s ease-in-out infinite;transform-origin:50% 100%;transform-box:fill-box}
 @keyframes flicker{0%,100%{transform:scaleY(1) rotate(0deg)}30%{transform:scaleY(1.12) rotate(-2deg)}60%{transform:scaleY(.94) rotate(2deg)}}
+.swing{animation:swing 5s ease-in-out infinite;transform-origin:50% 0}
+@keyframes swing{0%,100%{transform:rotate(-4.5deg)}50%{transform:rotate(4.5deg)}}
 
 .anim-spin-slow{animation:spin 120s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -73,7 +91,7 @@ h1,h2,h3{@apply font-serif}
 @keyframes sheet{from{opacity:0;transform:translateY(40px) scale(.97)}}
 @keyframes tick{from{opacity:0;transform:translateY(-40%) scale(.9)}}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-@keyframes ring{0%{box-shadow:0 0 0 0 rgba(196,154,44,.5)}100%{box-shadow:0 0 0 18px rgba(196,154,44,0)}}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(236,187,110,.55)}100%{box-shadow:0 0 0 18px rgba(236,187,110,0)}}
 @keyframes sweep{from{transform:scaleX(0)}}
 .anim-up{animation:fadeUp .9s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:var(--d,0ms)}
 .anim-fade{animation:fadeIn .25s ease-out}

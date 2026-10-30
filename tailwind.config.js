@@ -1,13 +1,15 @@
 module.exports={content:["./app/**/*.{js,jsx}","./components/**/*.{js,jsx}"],theme:{extend:{
 colors:{
- // Kerala mural palette: banana-leaf green, kasavu cream & zari gold, Theyyam red
- ink:{DEFAULT:"#1B4A2E",700:"#26603D",900:"#12261A"},
- paper:{DEFAULT:"#F7EFDC",dark:"#EEDFB8",deep:"#E3CD97"},
- stamp:{DEFAULT:"#A82A1E",light:"#C4463A"},
- gold:{DEFAULT:"#C49A2C",light:"#E1BC5A"},
- leaf:{DEFAULT:"#3F7F3A",dark:"#2B5F2B",light:"#6BAA55"},
- turmeric:"#E3A91F",
- obsidian:"#17120D",
+ // Palette sampled from the design team's artwork
+ ink:{DEFAULT:"#1F3317",700:"#2E4A22",900:"#0F1C0E"},     // forest-night greens
+ paper:{DEFAULT:"#F0E2BC",dark:"#E4CE9C",deep:"#D2B77E"}, // kasavu ribbon cream
+ stamp:{DEFAULT:"#A3240C",light:"#D14912"},                // Theyyam vermilion
+ gold:{DEFAULT:"#C28A36",light:"#ECBB6E"},                 // brass & zari
+ leaf:{DEFAULT:"#4A7030",dark:"#2F5222",light:"#7FA34A"},
+ rust:"#8C4D21",
+ oxblood:"#601B0A",
+ turmeric:"#D39040",
+ obsidian:"#0F1C0E",
  concrete:"#9C9D9B",
 },
 fontFamily:{

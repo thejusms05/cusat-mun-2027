@@ -4,7 +4,7 @@ import {useId} from "react";
 // A rotated, ink-stamp style circular badge with curved text.
 export default function Stamp({text="CUSAT MUN",sub="2027",rotate=-8,size=104,tone="ink",className=""}){
  const id=useId().replace(/[^a-zA-Z0-9]/g,"");
- const col=tone==="stamp"?"#A82A1E":tone==="gold"?"#D4AC47":"#1B4A2E";
+ const col=tone==="stamp"?"#A3240C":tone==="gold"?"#ECBB6E":"#1F3317";
  return (
   <div className={`stamp ${className}`} style={{"--rot":`${rotate}deg`,color:col}}>
    <svg viewBox="0 0 120 120" width={size} height={size} role="img" aria-label={`${text} ${sub}`}>

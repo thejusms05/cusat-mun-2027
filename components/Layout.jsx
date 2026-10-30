@@ -40,7 +40,9 @@ export function Navbar(){
 
 export function Footer(){
  const s=[[Instagram,"Instagram",SITE.socials.instagram],[Linkedin,"LinkedIn",SITE.socials.linkedin],[Twitter,"X",SITE.socials.x]];
- return(<footer className="relative bg-ink-900 text-paper/85">
+ return(<footer className="relative isolate overflow-hidden bg-ink-900 text-paper/85">
+  <div className="art-foot absolute inset-0 -z-20 hidden opacity-45 md:block" aria-hidden="true"/>
+  <div className="absolute inset-0 -z-10 bg-gradient-to-b from-ink-900/80 via-ink-900/85 to-ink-900/95" aria-hidden="true"/>
   <div className="kasavu-band"/>
   <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.2fr_1fr_1fr]">
    <div>
