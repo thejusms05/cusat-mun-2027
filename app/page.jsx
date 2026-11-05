@@ -1,18 +1,19 @@
 import Link from "next/link";
-import Image from "next/image";
 import {Calendar,Landmark,Users,Target,School,GraduationCap,UserCheck} from "lucide-react";
 import Countdown from "@/components/Countdown";
 import Reveal from "@/components/Reveal";
 import CountUp from "@/components/CountUp";
 import Stamp from "@/components/Stamp";
 import MunLogo from "@/components/MunLogo";
-import Lamp from "@/components/Lamp";
 import Bells from "@/components/Bells";
 import Rosette from "@/components/Rosette";
 import CollageMenu from "@/components/CollageMenu";
+import AboutCusatMun from "@/components/AboutCusatMun";
+import AboutCusat from "@/components/AboutCusat";
+import GettingHere from "@/components/GettingHere";
 import {DATES,eligibility} from "@/lib/data";
 
-const stats=[[Calendar,3," Days"],[Landmark,8," Committees"],[Users,500,"+ Delegates"],[Target,1," Mission"]];
+const stats=[[Calendar,3," Days"],[Landmark,9," Committees"],[Users,500,"+ Delegates"],[Target,1," Mission"]];
 const eligIcons=[School,GraduationCap,UserCheck];
 const d=ms=>({"--d":ms+"ms"});
 
@@ -82,25 +83,12 @@ export default function Home(){
   </section>
   <div className="kasavu-band"/>
 
-  {/* ---------- theme, with the framed artwork ---------- */}
-  <section className="bg-paper-dark/40">
-   <div className="section grid items-center gap-12 lg:grid-cols-2">
-    <Reveal className="border-l-4 border-gold pl-6">
-     <Lamp size={30} className="mb-3 text-gold"/>
-     <h2 className="text-3xl font-bold sm:text-4xl">Bridging divides, building consensus</h2>
-     <p className="mt-4 leading-relaxed text-ink/80">This year's theme asks delegates to look past national positions and find workable common ground on the crises that cross borders: conflict, climate, health and inequality.</p>
-     <p className="mt-3 leading-relaxed text-ink/80">A sadhya is served on a single leaf: dozens of dishes, each different, all meant to be shared. Each committee is one of those dishes — a different agenda, a different table. Expect rigorous research, sharp rhetoric and resolutions worth defending.</p>
-     <Link href="/committees" className="btn-ink mt-6">Unwrap the committees</Link>
-    </Reveal>
-    <Reveal delay={200} className="mx-auto w-full max-w-xs sm:max-w-sm">
-     <div className="rotate-2 border-4 border-gold bg-paper p-2.5 shadow-2xl">
-      <div className="relative aspect-[900/1198] overflow-hidden bg-ink-900">
-       <Image src="/images/hero-portrait.webp" alt="Illustration of a Theyyam artist in full ornament, framed by banana leaves, brass lamps and jasmine garlands" fill sizes="(max-width:768px) 80vw, 384px" className="object-cover"/>
-      </div>
-     </div>
-    </Reveal>
-   </div>
-  </section>
+  {/* ---------- about, location ---------- */}
+  <AboutCusatMun/>
+  <div className="kasavu-band"/>
+  <AboutCusat/>
+  <div className="kasavu-band"/>
+  <GettingHere/>
   <div className="kasavu-band"/>
 
   {/* ---------- who can attend ---------- */}

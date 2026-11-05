@@ -41,7 +41,7 @@ export default function PortfolioMatrix(){
       <span className="flex items-center gap-3"><span className="font-serif text-lg font-bold">{c.abbr}</span><span className="label-mono text-ink/45">{c.level}</span></span>
       {cnt
        ? <span className="label-mono flex gap-3 text-ink/50"><span>{cnt.available} open</span><span>{cnt.pending} pending</span><span>{cnt.confirmed} confirmed</span></span>
-       : <span className="label-mono text-ink/40">No portfolios — apply directly</span>}
+       : <span className="label-mono text-ink/40">Coming soon</span>}
       <ChevronDown className={`shrink-0 text-ink transition ${isOpen?"rotate-180":""}`}/>
      </button>
      <div className={`grid transition-[grid-template-rows] duration-300 ${isOpen?"grid-rows-[1fr]":"grid-rows-[0fr]"}`}>
@@ -53,7 +53,7 @@ export default function PortfolioMatrix(){
              <span>{p.name}</span><StatusBadge status={p.status}/>
             </li>)}
            </ul>
-         : <p className="font-mono text-sm text-ink/60">{c.abbr} is a press committee and does not carry country or party portfolios — register directly from the Registration page.</p>}
+         : <p className="text-sm text-ink/70">Portfolios for {c.abbr} will be announced soon.</p>}
        </div>
       </div>
      </div>
