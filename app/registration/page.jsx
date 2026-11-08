@@ -12,7 +12,7 @@ const OPTIONS=[
 
 export default function Registration(){
  return(<>
- <PageHeader eyebrow="Take Your Seat" title="Registration" sub="Registration is done through a Google Form. Choose the one that fits you and fill it in."/>
+ <PageHeader  title="Registration" sub="Registration is done through a Google Form. Choose the one that fits you and fill it in."/>
  <div className="section max-w-5xl">
   <div className="grid gap-8 md:grid-cols-3">
    {OPTIONS.map(({key,icon:I,title,who,cta},i)=>{

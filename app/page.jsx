@@ -34,7 +34,7 @@ export default function Home(){
      </h1>
      <div className="anim-up mt-4 inline-block border-4 border-gold-light px-3 py-0.5 font-serif text-3xl font-bold text-gold-light sm:text-4xl" style={d(300)}>2027</div>
      <p className="label-mono anim-up mt-5 !text-paper/85" style={d(420)}>{DATES} · Kochi, Kerala</p>
-     <p className="anim-up mt-3 max-w-md leading-relaxed text-paper/85" style={d(520)}>Three days of diplomacy, debate and consensus-building at Cochin University of Science and Technology — open to school, college and individual delegates.</p>
+     <p className="anim-up mt-3 max-w-md leading-relaxed text-paper/85" style={d(520)}>Three days of diplomacy, debate and consensus-building at Cochin University of Science and Technology - open to school, college and individual delegates.</p>
      <div className="anim-up mt-7 flex flex-wrap items-center gap-4" style={d(620)}>
       <Link href="/registration" className="btn-gold anim-ring px-8 py-4 text-lg">Register Now</Link>
       <a href="#explore" className="label-mono !text-gold-light underline underline-offset-4 hover:!text-paper">Or step into Kerala ↓</a>
@@ -53,16 +53,10 @@ export default function Home(){
    <Bells/>
    <div className="mx-auto max-w-6xl px-4 sm:px-6">
     <Reveal className="text-center">
-     <p className="font-malayalam text-2xl text-stamp">കേരളം</p>
      <h2 className="mt-1 text-3xl font-bold sm:text-4xl">Step into Kerala</h2>
-     <p className="mx-auto mt-3 max-w-xl text-ink/80">Touch the collage to find your way. Tap the bus, the pookalam, the Kathakali… a label appears — tap it to go.</p>
+     <p className="mx-auto mt-3 max-w-xl text-ink/80">Touch the collage to find your way. Tap the bus, the pookalam, the Kathakali… a label appears - tap it to go.</p>
     </Reveal>
     <Reveal delay={150} className="mt-8"><CollageMenu/></Reveal>
-    <nav aria-label="Site sections" className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-center">
-     {[["Kathakali","Registration","/registration"],["Pookalam","Committees","/committees"],["KSRTC bus","Portfolio Matrix","/portfolio-matrix"],["Mullappoo","Itinerary","/itinerary"],["Sadya","Executive Board","/executive-board"],["Payasam","Secretariat","/secretariat"],["Elephant","Contact","/contact"]].map(([o,l,h])=>(
-      <Link key={h} href={h} className="label-mono hover:!text-stamp"><span className="text-ink/45">{o} → </span>{l}</Link>
-     ))}
-    </nav>
    </div>
   </section>
   <div className="kasavu-band"/>
@@ -98,7 +92,7 @@ export default function Home(){
    <Reveal className="text-center">
     <Stamp text="Access Pass" sub="All Welcome" rotate={3} size={86} tone="ink" className="mx-auto mb-4"/>
     <h2 className="text-3xl font-bold sm:text-4xl">Who can attend</h2>
-    <p className="mx-auto mt-3 max-w-xl text-ink/80">CUSAT MUN welcomes delegations of every kind — and delegates with no team at all.</p>
+    <p className="mx-auto mt-3 max-w-xl text-ink/80">CUSAT MUN welcomes delegations of every kind - and delegates with no team at all.</p>
    </Reveal>
    <div className="mt-12 flex flex-wrap justify-center gap-8">
     {eligibility.map(([t,desc],i)=>{const I=eligIcons[i];return(

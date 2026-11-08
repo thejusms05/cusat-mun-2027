@@ -10,7 +10,7 @@ const isPlaceholder=n=>/^(chairperson|vice-chair(person)?|rapporteur)\s*name$/i.
 
 export default function ExecutiveBoard(){
  return(<>
- <PageHeader eyebrow="Sadya · A Little of Everything" title="Executive Board" sub="The chairs who guide every committee — many ingredients, one dish. Names are announced as each board is finalised."/>
+ <PageHeader  title="Executive Board" />
  <div className="section space-y-8">
   {committees.map((c,ci)=>{
    const Icon=iconFor(c);

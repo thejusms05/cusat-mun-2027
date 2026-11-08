@@ -14,7 +14,7 @@ function Acc({title,sub,children,open,onToggle,mono}){
 export default function Itinerary(){
  const [d,setD]=useState(0),[f,setF]=useState(0);
  return(<>
- <PageHeader eyebrow="Order of Events · 22–24 Jan 2027" title="Itinerary & Resources"/>
+ <PageHeader title="Itinerary & Resources"/>
  <section className="section max-w-3xl"><h2 className="text-3xl font-bold">Schedule</h2>
   <div className="mt-6 space-y-3">{days.map((x,i)=><Acc key={x.d} title={x.d} sub={x.t} open={d===i} onToggle={()=>setD(d===i?-1:i)} mono>
    <ol className="ml-2 space-y-4 border-l-2 border-dashed border-gold pl-5">{x.items.map(([t,e])=><li key={t+e} className="relative"><span className="absolute -left-[27px] top-1.5 h-3 w-3 rounded-full border-2 border-gold bg-paper"/><span className="font-mono font-semibold">{t}</span><span className="ml-3 text-ink/80">{e}</span></li>)}</ol></Acc>)}</div></section>

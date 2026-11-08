@@ -1,79 +1,87 @@
-"use client";
-import {useEffect,useState} from "react";
-import Image from "next/image";
-import Link from "next/link";
-import {ArrowRight} from "lucide-react";
-import {SPOTS,COLLAGE} from "@/lib/collage";
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
-const clip=poly=>`polygon(${poly.map(([x,y])=>`${x}% ${y}%`).join(",")})`;
-const pts=poly=>poly.map(p=>p.join(",")).join(" ");
-const dim=poly=>`M0 0H100V100H0Z M${poly.map(([x,y],i)=>`${i?"L":""}${x} ${y}`).join(" ")}Z`;
+// We define your new spots, URLs, and coordinates directly here
+const NEW_SPOTS = [
+  { id: 'registration', name: 'Registrations', label: 'Register Now', href: '/registration', pos: { h: { top: '55%', left: '12%' }, v: { top: '47%', left: '18%' } } },
+  { id: 'contact', name: 'Contacts', label: 'Get in Touch', href: '/contact', pos: { h: { top: '55%', left: '45%' }, v: { top: '25%', left: '22%' } } },
+  { id: 'committees', name: 'Committees', label: 'View Committees', href: '/committees', pos: { h: { top: '40%', left: '63%' }, v: { top: '31%', left: '45%' } } },
+  { id: 'executive-board', name: 'Executive Board', label: 'Meet the EB', href: '/executive-board', pos: { h: { top: '65%', left: '85%' }, v: { top: '67%', left: '52%' } } },
+  { id: 'secretariat', name: 'Secretariat', label: 'The Team', href: '/secretariat', pos: { h: { top: '89%', left: '67%' }, v: { top: '88%', left: '59%' } } },
+  { id: 'itinerary', name: 'Itinerary', label: 'Schedule', href: '/itinerary', pos: { h: { top: '82%', left: '43.5%' }, v: { top: '86%', left: '34%' } } },
+  { id: 'portfolio-matrix', name: 'Portfolio Matrix', label: 'Allotments', href: '/portfolio-matrix', pos: { h: { top: '40%', left: '83%' }, v: { top: '15%', left: '40%' } } },
+];
 
-function Collage({layout,className=""}){
- const [active,setActive]=useState(null);
- const [touch,setTouch]=useState(false);
- useEffect(()=>{setTouch(window.matchMedia("(hover: none)").matches)},[]);
- const c=COLLAGE[layout];
- const cur=SPOTS.find(s=>s.id===active);
- const tx=cur?(cur.anchor[layout][0]<25?"0%":cur.anchor[layout][0]>75?"-100%":"-50%"):"-50%";
- return (
-  <div className={`relative mx-auto select-none ${className}`} onMouseLeave={()=>setActive(null)} onKeyDown={e=>{if(e.key==="Escape")setActive(null)}}>
-   <Image src={c.src} alt="A collage of Kerala: a Kathakali artist, a sadya on a banana leaf, a KSRTC bus, an elephant, a pookalam, jasmine, payasam, a snake boat and palms" width={c.w} height={c.h} sizes={layout==="h"?"(min-width:1024px) 1100px, 100vw":"(max-width:1023px) 512px, 100vw"} className="h-auto w-full"/>
+function Collage({ layout, className }) {
+  const [active, setActive] = useState(null);
+  
+  // Selects the correct image based on the layout prop
+  const isDesktop = layout === 'h';
+  const imgSrc = isDesktop ? '/images/collage2horizontal.jpeg' : '/images/collage2vertical.jpeg';
+  
+  const cur = NEW_SPOTS.find(s => s.id === active);
 
-   {/* background layer: moving onto it clears the highlight */}
-   <div className="absolute inset-0" onPointerEnter={e=>{if(e.pointerType==="mouse")setActive(null)}} onClick={()=>setActive(null)}/>
+  return (
+    <div className={`relative mx-auto select-none ${className}`}>
+      {/* Background image without highlighting */}
+      <img 
+        src={imgSrc} 
+        alt="Collage of Kerala" 
+        className="w-full h-auto rounded-lg"
+        onClick={() => setActive(null)} // Click anywhere else on image to close pop-up
+      />
 
-   {/* dim everything except the active element, and outline it */}
-   {cur&&(
-    <svg className="anim-fade pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-     <path d={dim(cur.poly[layout])} fill="rgba(15,28,14,.6)" fillRule="evenodd"/>
-     <polygon points={pts(cur.poly[layout])} fill="none" stroke="#ECBB6E" strokeWidth="3" strokeLinejoin="round" vectorEffect="non-scaling-stroke" style={{filter:"drop-shadow(0 0 8px rgba(236,187,110,.95))"}}/>
-    </svg>
-   )}
+      {/* The interactive pulsing buttons */}
+      {NEW_SPOTS.map((s) => (
+        <button
+          key={s.id}
+          onClick={(e) => {
+            e.stopPropagation(); // Stops the background image click from firing
+            setActive(active === s.id ? null : s.id); // Toggles the pop-up
+          }}
+          className="absolute z-10 w-8 h-8 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center focus:outline-none cursor-pointer"
+          style={{ top: s.pos[layout].top, left: s.pos[layout].left }}
+          aria-label={s.name}
+        >
+          {/* Button Styling */}
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-light opacity-70"></span>
+          <span className="relative block h-4 w-4 rounded-full border-2 border-ink-900 bg-gold-light shadow-lg"></span>
+        </button>
+      ))}
 
-   {/* one clickable region per element, cut to its outline */}
-   {SPOTS.map(s=>(
-    <Link
-     key={s.id}
-     href={s.href}
-     aria-label={`${s.name} — ${s.label}`}
-     className="absolute inset-0 cursor-pointer focus:outline-none"
-     style={{clipPath:clip(s.poly[layout])}}
-     onPointerEnter={e=>{if(e.pointerType==="mouse")setActive(s.id)}}
-     onFocus={()=>setActive(s.id)}
-     onClick={e=>{if(touch&&active!==s.id){e.preventDefault();setActive(s.id)}}}
-    />
-   ))}
-
-   {/* little pulsing hints, until something is touched */}
-   {!active&&SPOTS.map(s=>(
-    <span key={s.id} className="pointer-events-none absolute z-10 h-4 w-4 -translate-x-1/2 -translate-y-1/2" style={{left:`${s.anchor[layout][0]}%`,top:`${s.anchor[layout][1]}%`}} aria-hidden="true">
-     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-light opacity-70"/>
-     <span className="relative block h-4 w-4 rounded-full border-2 border-ink-900 bg-gold-light shadow-lg"/>
-    </span>
-   ))}
-
-   {/* the pop-up label */}
-   {cur&&(
-    <Link href={cur.href} className="anim-fade absolute z-30 block" style={{left:`${cur.anchor[layout][0]}%`,top:`${cur.anchor[layout][1]}%`,transform:`translate(${tx},-50%)`}}>
-     <span className="flex items-center gap-3 whitespace-nowrap rounded-sm border-2 border-gold-light bg-ink-900/95 px-3.5 py-2 text-paper shadow-2xl sm:px-4 sm:py-2.5">
-      <span>
-       <span className="label-mono block !text-gold-light">{cur.name}</span>
-       <span className="block font-serif text-lg font-bold leading-tight sm:text-2xl">{cur.label}</span>
-       {touch&&<span className="label-mono mt-0.5 block !text-paper/60">Tap to open</span>}
-      </span>
-      <ArrowRight size={20} className="shrink-0 text-gold-light"/>
-     </span>
-    </Link>
-   )}
-  </div>
- );
+      {/* The pop-up label that redirects to the page */}
+      {cur && (
+        <Link 
+          href={cur.href} 
+          className="anim-fade absolute z-20 block" 
+          style={{ 
+            left: cur.pos[layout].left, 
+            top: cur.pos[layout].top, 
+            transform: 'translate(15px, -50%)' // Shifts the pop-up slightly to the right of the button
+          }}
+        >
+          <span className="flex items-center gap-3 whitespace-nowrap rounded-sm border-2 border-gold-light bg-ink-900/95 px-3.5 py-2 text-paper shadow-2xl">
+            <span className="flex flex-col">
+              <span className="label-mono block text-gold-light">{cur.name}</span>
+              <span className="block font-serif text-lg font-bold leading-tight text-paper">{cur.label}</span>
+              <span className="label-mono mt-0.5 block text-paper/70">Tap to open</span>
+            </span>
+            <ArrowRight size={20} className="shrink-0 text-gold-light" />
+          </span>
+        </Link>
+      )}
+    </div>
+  );
 }
 
-// Horizontal collage on laptops, vertical collage on phones and tablets.
-export default function CollageMenu(){
- return (<>
-  <Collage layout="h" className="hidden max-w-6xl lg:block"/>
-  <Collage layout="v" className="max-w-lg lg:hidden"/>
- </>);
+// Horizontal collage on laptops, vertical collage on phones and tablets
+export default function CollageMenu() {
+  return (
+    <>
+      <Collage layout="h" className="hidden max-w-[1200px] lg:block" />
+      <Collage layout="v" className="mx-auto lg:hidden max-w-md" />
+    </>
+  );
 }

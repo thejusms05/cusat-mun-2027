@@ -1,12 +1,18 @@
 import Polaroid from "@/components/Polaroid";
 import PageHeader from "@/components/PageHeader";
-const team=[["Secretary-General","Name Surname"],["Deputy Secretary-General","Name Surname"],["Director-General","Name Surname"]];
+const team = [
+  ["Secretary-General", "Ganga Pramod", "/images/gp.jpeg"], 
+  ["Deputy Secretary-General", "Goutham S Nair", "/images/placeholder.jpeg"], 
+  ["Director-General", "Karthik Ganesh", "/images/placeholder.jpeg"], 
+  ["Deputy Director-General", "Yahiya Rasheed", "/images/placeholder.jpeg"], 
+  ["Executive Director", "Yuga Wintz Galaxa", "/images/ywg.jpeg"]
+];
 export default function Secretariat(){
  return(<>
- <PageHeader eyebrow="The Organising Team" title="Secretariat" sub="The organising delegation behind CUSAT MUN 2027."/>
- <div className="section grid gap-10 sm:grid-cols-2 lg:grid-cols-4">{team.map(([r,n],i)=>
+ <PageHeader title="The Secretariat" />
+ <div className="section mx-auto flex max-w-5xl flex-wrap justify-center gap-12">{team.map(([r,n,img],i)=>
   <div key={r} className="flex flex-col items-center" style={{transform:`rotate(${i%2?2:-2}deg)`}}>
-   <Polaroid caption={n} rotate={0} tape="tc" className="w-44"/>
+   <Polaroid src={img} caption={n} rotate={0} tape="tc" className="w-56 md:w-64"/>
    <p className="label-mono mt-3 text-center text-ink/60">{r}</p>
   </div>)}</div></>);
 }

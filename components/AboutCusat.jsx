@@ -19,7 +19,7 @@ export default function AboutCusat(){
     <Reveal delay={200} className="mx-auto w-full max-w-xs">
      {c.photo
       ?<div className="rotate-2 border-4 border-gold-light bg-paper p-2 shadow-2xl"><div className="relative aspect-[4/5] overflow-hidden"><Image src={c.photo} alt="The CUSAT campus" fill sizes="320px" className="object-cover"/></div></div>
-      :<Rosette className="h-auto w-full drop-shadow-2xl"/>}
+      :<img src="/images/cusat_logo_gold.png" alt="CUSAT Logo Gold" className="h-auto w-full max-w-xs mx-auto drop-shadow-2xl" />}
     </Reveal>
    </div>
   </section>

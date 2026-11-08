@@ -10,6 +10,14 @@ import {iconFor} from "@/components/committeeIcons";
 export default function CommitteeGrid(){
  const q=useSearchParams().get("c");
  const [sel,setSel]=useState(null);
+ const [showComingSoon, setShowComingSoon] = useState(false);
+ const handleViewDetails = (c) => {
+  if (c.id === "bestofbest") {
+    setShowComingSoon(true);
+  } else {
+    setSel(c);
+  }
+};
  useEffect(()=>{setSel(committees.find(c=>c.id===q)||null)},[q]);
  useEffect(()=>{const f=e=>e.key==="Escape"&&setSel(null);addEventListener("keydown",f);return()=>removeEventListener("keydown",f)},[]);
  const SelIcon=sel?iconFor(sel):null;
@@ -17,7 +25,7 @@ export default function CommitteeGrid(){
   <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
    {committees.map((c,i)=>(
     <Reveal key={c.id} delay={(i%4)*90}>
-     <CommitteeTile committee={c} onViewDetails={setSel}/>
+     <CommitteeTile committee={c} onViewDetails={handleViewDetails}/>
     </Reveal>
    ))}
   </div>
@@ -41,5 +49,24 @@ export default function CommitteeGrid(){
       <a href="#" className="btn-ink"><Download size={18}/>Country Matrix</a></div>
     </div>
    </div></div>}
+{showComingSoon && (
+  <div className="fixed inset-0 z-[70] flex items-center justify-center bg-ink-900/80 p-4 backdrop-blur-sm transition-opacity">
+    <div className="relative w-full max-w-sm border-2 border-gold-light bg-paper p-8 text-center shadow-2xl">
+      <h3 className="mb-3 font-serif text-3xl font-bold text-gold-light">
+        Coming Soon!
+      </h3>
+      <p className="mb-6 leading-relaxed text-ink/80">
+        The agenda and details of Committee X will be revealed closer to the conference.
+      </p>
+      <button 
+        onClick={() => setShowComingSoon(false)}
+        className="border border-ink bg-ink px-6 py-2 font-mono text-sm font-semibold tracking-widest text-paper transition-colors hover:bg-paper hover:text-ink"
+      >
+        CLOSE
+      </button>
+    </div>
+  </div>
+)}
  </>);
 }
+

@@ -20,7 +20,7 @@ export default function CommitteeTile({committee,onViewDetails}){
      <button type="button" tabIndex={open?0:-1} onClick={()=>onViewDetails(committee)} className="btn-ink mt-auto w-full py-2">View Details</button>
     </div>
    </div>
-   <button type="button" onClick={()=>setOpen(true)} disabled={open} aria-label={`Unwrap the ${committee.abbr} leaf`} className={`absolute inset-0 z-10 cursor-pointer ${open?"pointer-events-none":""}`}>
+   <button type="button" onClick={() => committee.id === "bestofbest" ? onViewDetails(committee) : setOpen(true)} className={`absolute inset-0 z-10 cursor-pointer ${open?"pointer-events-none":""}`}>
     <span className="wrap-flap left"/>
     <span className="wrap-flap right"/>
     <span className="wrap-thread absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 bg-gradient-to-r from-gold via-gold-light to-gold"/>

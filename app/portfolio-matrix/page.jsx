@@ -1,65 +1,40 @@
-"use client";
-import {useEffect,useState} from "react";
-import {ChevronDown,Loader2} from "lucide-react";
-import {committees} from "@/lib/data";
 import PageHeader from "@/components/PageHeader";
-import StatusBadge from "@/components/StatusBadge";
+import { FileSpreadsheet } from "lucide-react"; 
 
-function counts(list){
- return {
-  available: list.filter(p=>p.status==="available").length,
-  pending: list.filter(p=>p.status==="pending").length,
-  confirmed: list.filter(p=>p.status==="confirmed").length,
- };
-}
+export default function PortfolioMatrix() {
+  return (
+    <main className="min-h-screen bg-paper text-ink">
+      <PageHeader 
+        eyebrow="THE COMMITTEES" 
+        title="Portfolio Matrix" 
+        sub="Access the complete matrix to see available countries and portfolios." 
+      />
+      
+      <div className="section mx-auto flex max-w-md justify-center px-4 py-16">
+        <div className="flex w-full flex-col items-center border-2 border-gold/40 bg-paper p-8 text-center shadow-xl">
+          
+          {/* Icon Circle */}
+          <div className="mb-6 rounded-full bg-ink p-4 text-gold-light">
+            <FileSpreadsheet size={32} />
+          </div>
+          
+          <h2 className="mb-2 font-serif text-2xl font-bold text-ink">Master Portfolio Matrix</h2>
+          <p className="mb-8 text-sm text-ink/80">
+            View the complete, updated list of all committees and their respective portfolios in our live spreadsheet.
+          </p>
+          
+          {/* Button */}
+          <a 
+            href="YOUR_EXCEL_SHEET_LINK_HERE" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 border-2 border-ink bg-ink px-6 py-3 font-mono text-sm font-semibold tracking-widest text-paper transition-colors hover:bg-paper hover:text-ink"
+          >
+            OPEN SPREADSHEET
+          </a>
 
-export default function PortfolioMatrix(){
- const [open,setOpen]=useState(committees[0]?.id);
- const [portfolios,setPortfolios]=useState({});
- const [loading,setLoading]=useState(true);
-
- useEffect(()=>{
-  fetch("/api/portfolios",{cache:"no-store"}).then(r=>r.json()).then(json=>{
-   const grouped={};
-   for(const p of json.portfolios||[]) (grouped[p.committee_id] ||= []).push(p);
-   setPortfolios(grouped);
-   setLoading(false);
-  });
- },[]);
-
- return(<>
- <PageHeader eyebrow="Live Roster" title="Portfolio Matrix" sub="See which countries and portfolios are open, which are assigned and awaiting payment, and which are fully confirmed — updated as registrations are processed."/>
- {loading?<div className="section flex justify-center"><Loader2 className="animate-spin text-ink" size={28}/></div>:
- <div className="section max-w-3xl space-y-3">
-  {committees.map(c=>{
-   const list=portfolios[c.id];
-   const cnt=list?counts(list):null;
-   const isOpen=open===c.id;
-   return(
-    <div key={c.id} className="border-2 border-ink/15 bg-paper">
-     <button onClick={()=>setOpen(isOpen?null:c.id)} aria-expanded={isOpen} className="flex w-full flex-wrap items-center justify-between gap-3 px-5 py-4 text-left">
-      <span className="flex items-center gap-3"><span className="font-serif text-lg font-bold">{c.abbr}</span><span className="label-mono text-ink/45">{c.level}</span></span>
-      {cnt
-       ? <span className="label-mono flex gap-3 text-ink/50"><span>{cnt.available} open</span><span>{cnt.pending} pending</span><span>{cnt.confirmed} confirmed</span></span>
-       : <span className="label-mono text-ink/40">Coming soon</span>}
-      <ChevronDown className={`shrink-0 text-ink transition ${isOpen?"rotate-180":""}`}/>
-     </button>
-     <div className={`grid transition-[grid-template-rows] duration-300 ${isOpen?"grid-rows-[1fr]":"grid-rows-[0fr]"}`}>
-      <div className="overflow-hidden">
-       <div className="border-t-2 border-ink/10 px-5 py-4">
-        {list
-         ? <ul className="grid gap-2 sm:grid-cols-2">
-            {[...list].sort((a,b)=>a.name.localeCompare(b.name)).map(p=><li key={p.id} className="flex items-center justify-between gap-3 border-b border-ink/10 py-2 text-sm">
-             <span>{p.name}</span><StatusBadge status={p.status}/>
-            </li>)}
-           </ul>
-         : <p className="text-sm text-ink/70">Portfolios for {c.abbr} will be announced soon.</p>}
-       </div>
+        </div>
       </div>
-     </div>
-    </div>
-   );
-  })}
- </div>}
- </>);
+    </main>
+  );
 }
