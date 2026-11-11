@@ -1,3 +1,4 @@
+import Image from "next/image";
 "use client";
 import {useEffect, useState} from "react";
 import Stamp from "@/components/Stamp";
@@ -45,24 +46,30 @@ export default function EasterEgg() {
       
       {activeEgg === "tamanna" && (
         <div className="anim-stamp flex rotate-6 flex-col items-center justify-center rounded-sm border-2 border-gold bg-paper p-3 shadow-xl">
-          <img 
-            src="/images/tamanna.jpg" 
-            alt="Tamanna" 
-            className="h-32 w-32 object-cover drop-shadow-md" 
-          />
+          <Image
+  src="/images/tamanna.jpg"
+  alt="Tamanna"
+  width={128}
+  height={128}
+  className="h-32 w-32 object-cover drop-shadow-md"
+/>
           <p className="mt-3 font-serif text-xl font-bold text-ink">Hello Hayati!</p>
         </div>
       )}
 
       {activeEgg === "secgen" && (
         <div className="flex flex-col items-center justify-center rounded-sm border-4 border-gold bg-paper p-3 shadow-2xl transition-all duration-300">
-          <img 
-            src="/images/secgen-meme.png" 
-            alt="Sec Gen Meme" 
-            className="max-h-64 max-w-xs object-contain drop-shadow-md" 
-          />
+          <Image
+  src="/images/secgen-meme.png"
+  alt="Sec Gen Meme"
+  width={320}
+  height={256}
+  className="max-h-64 max-w-xs object-contain drop-shadow-md"
+/>
         </div>
       )}
     </div>
   );
 }
+
+
