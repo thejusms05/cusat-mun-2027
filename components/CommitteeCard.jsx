@@ -31,3 +31,5 @@ export default function CommitteeCard({committee,onViewDetails,className=""}){
   </div>
  );
 }
+
+
