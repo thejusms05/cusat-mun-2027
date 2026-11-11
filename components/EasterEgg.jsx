@@ -1,5 +1,5 @@
-import Image from "next/image";
 "use client";
+import Image from "next/image";
 import {useEffect, useState} from "react";
 import Stamp from "@/components/Stamp";
 
@@ -22,6 +22,9 @@ export default function EasterEgg() {
       } else if (buf.endsWith("secgen")) {
         setActiveEgg("secgen");
         setTimeout(() => setActiveEgg(null), 4000); // Gives them a little longer to read the meme
+      } else if (buf.endsWith("sonu")) {
+        setActiveEgg("sonu");
+        setTimeout(() => setActiveEgg(null), 3200);
       }
     };
     
@@ -66,6 +69,22 @@ export default function EasterEgg() {
   height={256}
   className="max-h-64 max-w-xs object-contain drop-shadow-md"
 />
+        </div>
+      )}
+      {activeEgg === "sonu" && (
+        <div className="flex flex-col items-center justify-center animate-fade-in">
+          <Image 
+            src="/images/sonu.jpeg" 
+            alt="Sonu" 
+            width={400} 
+            height={400} 
+            className="rounded-lg border-4 border-gold-light object-cover drop-shadow-2xl" 
+          />
+          <div className="mt-6 rounded-sm border-2 border-gold-light bg-ink px-6 py-3">
+            <p className="font-mono text-3xl font-bold tracking-widest text-gold-light">
+              hello chonky boi!
+            </p>
+          </div>
         </div>
       )}
     </div>

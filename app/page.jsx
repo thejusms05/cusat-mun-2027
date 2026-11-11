@@ -18,7 +18,7 @@ const eligIcons=[School,GraduationCap,UserCheck];
 const d=ms=>({"--d":ms+"ms"});
 
 export default function Home(){
- return(<>
+ return(<main className="animate-fade-in">
   {/* ---------- hero: the design team's artwork ---------- */}
   <section className="relative isolate overflow-hidden bg-ink-900 text-paper">
    <div className="hero-art absolute inset-0 -z-20" aria-hidden="true"/>
@@ -104,5 +104,5 @@ export default function Home(){
    </div>
    </div>
   </section>
- </>);
+ </main>);
 }
