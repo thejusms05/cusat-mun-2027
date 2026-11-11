@@ -25,7 +25,7 @@ export default function PortfolioMatrix() {
           
           {/* Button */}
           <a 
-            href="YOUR_EXCEL_SHEET_LINK_HERE" 
+            href="https://docs.google.com/spreadsheets/d/1kF2yYbmZ58cv_--NxEj2dp9Xe5yQ61EQUvTpP8ULlPQ/edit?usp=sharing" 
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-2 border-2 border-ink bg-ink px-6 py-3 font-mono text-sm font-semibold tracking-widest text-paper transition-colors hover:bg-paper hover:text-ink"
@@ -38,3 +38,5 @@ export default function PortfolioMatrix() {
     </main>
   );
 }
+
+

@@ -36,7 +36,7 @@ export default function GalleryPage() {
             </h2>
             <div className="mb-4 h-px w-16 bg-gold/70"></div>
             <p className="max-w-3xl text-base leading-relaxed text-ink/80 sm:text-lg">
-              The official logo launch of CUSAT MUN 2027, proudly inaugurated by <b>Shri Abdul Gafoor</b>, Minister for Fisheries and Social Justice.
+              The official logo launch of CUSAT MUN 2027, proudly inaugurated by <b>Shri Abdul Gafoor</b>, Minister for Fisheries, Harbour Engineering and Social Justice.
             </p>
           </div>
 

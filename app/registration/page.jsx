@@ -5,10 +5,10 @@ import Reveal from "@/components/Reveal";
 import {FORMS} from "@/lib/forms";
 
 const OPTIONS=[
- {key:"delegation",icon:Users,title:"Delegation",who:"For Colleges and Universities registering together as a team.",cta:"Register a delegation"},
- {key:"cusatians",icon:GraduationCap,title:"School Delegation",who:"For Schools registering together as a team.",cta:"Register a delegation"},
- {key:"individual",icon:User,title:"Individual",who:"For delegates registering on their own, from any school or college.",cta:"Register as an individual"},
- {key:"ambassador",icon:Megaphone,title:"Campus Ambassador",who:"For students wishing to be CUSATMUN Campus Ambassadors in their respective institutions.",cta:"Apply as an Ambassador"}
+ {key:"delegation",icon:Users,title:"Delegation Registration",who:"For Institutional delegations (colleges and non-institutional delegations)",cta:"Register a delegation"},
+ {key:"cusatians",icon:GraduationCap,title:"School Delegation Registration",who:"For Schools registering together as a team.",cta:"Register a delegation"},
+ {key:"individual",icon:User,title:"Individual Registration",who:"For delegates registering on their own irrespective of school or college.",cta:"Register as an individual"},
+ {key:"ambassador",icon:Megaphone,title:"Campus Ambassador Registration",who:"For students wishing to be CUSATMUN Campus Ambassadors in their respective institutions.",cta:"Apply as an Ambassador"}
 ];
 
 export default function Registration(){

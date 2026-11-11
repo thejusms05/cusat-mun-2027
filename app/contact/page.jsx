@@ -1,4 +1,4 @@
-import {Mail,MapPin} from "lucide-react";
+import {Mail,MapPin, Phone} from "lucide-react";
 import Stamp from "@/components/Stamp";
 import PageHeader from "@/components/PageHeader";
 const items=[["Help Desk","cusatmun@cusat.ac.in"]];
@@ -11,6 +11,17 @@ export default function Contact(){
     <Stamp text="Air Mail" sub="" rotate={8} size={54} tone="ink" className="absolute right-4 top-4"/>
     <Mail className="text-stamp"/><h3 className="mt-3 text-xl font-bold">{t}</h3><p className="text-sm text-ink/70">{desc}</p>
     <p className="font-mono mt-3 text-lg italic">{e}</p></a>)}
+    <a href="tel:+919008831934" className="folder relative rotate-1">
+          <Stamp text="Air Mail" sub="" rotate={8} size={54} tone="ink" className="absolute right-4 top-4"/>
+          <Phone className="text-stamp"/><h3 className="mt-3 text-xl font-bold">Secretary-General</h3>
+          <p className="font-mono mt-3 text-lg italic">+91 90088 31934</p>
+        </a>
+        
+        <a href="tel:+919400272535" className="folder relative -rotate-1">
+          <Stamp text="Air Mail" sub="" rotate={8} size={54} tone="ink" className="absolute right-4 top-4"/>
+          <Phone className="text-stamp"/><h3 className="mt-3 text-xl font-bold">Dep. Secretary-General</h3>
+          <p className="font-mono mt-3 text-lg italic">+91 94002 72535</p>
+        </a>
   <div className="folder border-l-4 border-l-ink"><MapPin className="text-stamp"/><p className="mt-2 font-mono text-sm">Cochin University of Science and Technology, Kalamassery, Kochi, Kerala 682022</p></div>
- </div></>);
+ </div></>);  
 }

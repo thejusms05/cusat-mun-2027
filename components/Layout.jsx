@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import {useEffect,useState} from "react";
-import {Menu,X,ChevronDown,Instagram,Linkedin,Twitter,Mail,MapPin} from "lucide-react";
+import {Menu,X,ChevronDown,Instagram,Linkedin,Twitter,Mail,MapPin, Phone} from "lucide-react";
 import {committees} from "@/lib/data";
 import {SITE} from "@/lib/siteInfo";
 import MunLogo from "@/components/MunLogo";
@@ -84,7 +84,21 @@ export function Footer(){
    <div><h3 className="label-mono text-gold-light">Quick Links</h3><ul className="mt-3 space-y-2 text-sm">
     {[["Committees","/committees"],["Portfolio Matrix","/portfolio-matrix"],["Registration","/registration"],["Itinerary","/itinerary"],["Executive Board","/executive-board"]].map(([l,h])=><li key={h}><Link href={h} className="transition hover:text-gold-light">{l}</Link></li>)}</ul></div>
    <div><h3 className="label-mono text-gold-light">Reach Us</h3>
-    <ul className="mt-3 space-y-2 text-sm">{[["Help Desk","cusatmun@cusat.ac.in"]].map(([l,e])=><li key={l}><a href={`mailto:${e}`} className="flex items-center gap-2 transition hover:text-gold-light"><Mail size={16} className="text-gold-light"/>{l}: {e}</a></li>)}</ul>
+    <ul className="mt-3 space-y-2 text-sm">
+  {[["Help Desk","cusatmun@cusat.ac.in"]].map(([l,e])=><li key={l}><a href={`mailto:${e}`} className="flex items-center gap-2 transition hover:text-gold-light"><Mail size={16} className="text-gold-light"/>{l}: {e}</a></li>)}
+  <li>
+    <a href="tel:+919008831934" className="flex items-center gap-2 transition hover:text-gold-light">
+      <Phone size={16} className="text-gold-light"/>
+      Secretary-General : +91 90088 31934
+    </a>
+  </li>
+  <li>
+    <a href="tel:+919400272535" className="flex items-center gap-2 transition hover:text-gold-light">
+      <Phone size={16} className="text-gold-light"/>
+      Dep. Secretary-General: +91 94002 72535
+    </a>
+  </li>
+</ul>
     <div className="mt-4 flex gap-2">{s.map(([I,l,h])=><a key={l} href={h} aria-label={l} className="rounded-sm border-2 border-paper/20 p-2 transition hover:border-gold-light hover:text-gold-light"><I size={18}/></a>)}</div>
    </div>
   </div>
