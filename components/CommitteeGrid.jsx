@@ -62,6 +62,11 @@ export default function CommitteeGrid(){
       <h3 className="mb-3 font-serif text-3xl font-bold text-gold-light">
         Coming Soon!
       </h3>
+      <img 
+            src="/images/popup.jpeg" 
+            alt="Coming Soon Surprise" 
+            className="mx-auto mb-4 h-48 w-auto object-contain drop-shadow-lg" 
+          />
       <p className="mb-6 leading-relaxed text-ink/80">
         The agenda and details of Committee X will be revealed closer to the conference.
       </p>
