@@ -12,13 +12,20 @@ export default function CommitteeGrid(){
  const [sel,setSel]=useState(null);
  const [showComingSoon, setShowComingSoon] = useState(false);
  const handleViewDetails = (c) => {
-  if (c.id === "bestofbest") {
+  if (c.id === "bestofbest" || c.id === "flagcom") {
     setShowComingSoon(true);
   } else {
     setSel(c);
   }
 };
- useEffect(()=>{setSel(committees.find(c=>c.id===q)||null)},[q]);
+ useEffect(() => {
+  if (q === "bestofbest" || q === "flagcom") {
+    setShowComingSoon(true);
+    setSel(null);
+  } else {
+    setSel(committees.find(c => c.id === q) || null);
+  }
+}, [q]);
  useEffect(()=>{const f=e=>e.key==="Escape"&&setSel(null);addEventListener("keydown",f);return()=>removeEventListener("keydown",f)},[]);
  const SelIcon=sel?iconFor(sel):null;
  return(<>

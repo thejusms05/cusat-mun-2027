@@ -1,20 +1,21 @@
 import Link from "next/link";
-import {Users,GraduationCap,User,ExternalLink,Hourglass} from "lucide-react";
+import {Users,GraduationCap,User,ExternalLink,Hourglass,Megaphone} from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import Reveal from "@/components/Reveal";
 import {FORMS} from "@/lib/forms";
 
 const OPTIONS=[
- {key:"delegation",icon:Users,title:"Delegation",who:"For schools and colleges registering together as a team.",cta:"Register a delegation"},
- {key:"cusatians",icon:GraduationCap,title:"CUSATians",who:"For students of Cochin University of Science and Technology.",cta:"Register as a CUSATian"},
+ {key:"delegation",icon:Users,title:"Delegation",who:"For Colleges and Universities registering together as a team.",cta:"Register a delegation"},
+ {key:"cusatians",icon:GraduationCap,title:"School Delegation",who:"For Schools registering together as a team.",cta:"Register a delegation"},
  {key:"individual",icon:User,title:"Individual",who:"For delegates registering on their own, from any school or college.",cta:"Register as an individual"},
+ {key:"ambassador",icon:Megaphone,title:"Campus Ambassador",who:"For students wishing to be CUSATMUN Campus Ambassadors in their respective institutions.",cta:"Apply as an Ambassador"}
 ];
 
 export default function Registration(){
  return(<>
  <PageHeader  title="Registration" sub="Registration is done through a Google Form. Choose the one that fits you and fill it in."/>
  <div className="section max-w-5xl">
-  <div className="grid gap-8 md:grid-cols-3">
+  <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
    {OPTIONS.map(({key,icon:I,title,who,cta},i)=>{
     const href=FORMS[key];
     return(

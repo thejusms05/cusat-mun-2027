@@ -20,14 +20,18 @@ export default function CommitteeTile({committee,onViewDetails}){
      <button type="button" tabIndex={open?0:-1} onClick={()=>onViewDetails(committee)} className="btn-ink mt-auto w-full py-2">View Details</button>
     </div>
    </div>
-   <button type="button" onClick={() => committee.id === "bestofbest" ? onViewDetails(committee) : setOpen(true)} className={`absolute inset-0 z-10 cursor-pointer ${open?"pointer-events-none":""}`}>
-    <span className="wrap-flap left"/>
-    <span className="wrap-flap right"/>
-    <span className="wrap-thread absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 bg-gradient-to-r from-gold via-gold-light to-gold"/>
-    <span className="wrap-thread absolute left-1/2 top-0 h-full w-1.5 -translate-x-1/2 bg-gradient-to-b from-gold via-gold-light to-gold"/>
-    <span className="wrap-thread absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-4 border-gold bg-paper font-serif text-2xl font-bold text-ink shadow-lg">?</span>
-    <span className="wrap-thread label-mono absolute inset-x-0 bottom-3 text-center text-paper/90">Tap to unwrap</span>
-   </button>
+   <button 
+      type="button" 
+      onClick={() => committee.id === "bestofbest" || committee.id === "flagcom" ? onViewDetails(committee) : setOpen(true)} 
+      className={`absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center border-2 border-gold bg-paper transition-all duration-500 ${open ? "pointer-events-none opacity-0 scale-105" : "opacity-100 scale-100"}`}
+    >
+      <img 
+        src={committee.image} 
+        alt="Committee Figure" 
+        className="h-[80%] w-[80%] object-contain drop-shadow-md" 
+      />
+      <span className="absolute bottom-4 label-mono text-ink/80 uppercase tracking-wider">{committee.navarasa}</span>
+    </button>
   </div>
  );
 }

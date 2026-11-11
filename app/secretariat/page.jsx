@@ -2,9 +2,9 @@ import Polaroid from "@/components/Polaroid";
 import PageHeader from "@/components/PageHeader";
 const team = [
   ["Secretary-General", "Ganga Pramod", "/images/gp.jpeg"], 
-  ["Deputy Secretary-General", "Goutham S Nair", "/images/placeholder.jpeg"], 
-  ["Director-General", "Karthik Ganesh", "/images/placeholder.jpeg"], 
-  ["Deputy Director-General", "Yahiya Rasheed", "/images/placeholder.jpeg"], 
+  ["Deputy Secretary-General", "Goutham S Nair", "/images/depsecgen.jpeg"], 
+  ["Director-General", "Karthik Ganesh", "/images/dirgen.jpeg"], 
+  ["Deputy Director-General", "Yahiya Rasheed", "/images/depdirgen.jpeg"], 
   ["Executive Director", "Yuga Wintz Galaxa", "/images/ywg.jpeg"]
 ];
 export default function Secretariat(){
