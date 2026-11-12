@@ -50,11 +50,13 @@ export function Navbar(){
   <div className="fixed inset-0 z-[70] flex items-center justify-center bg-ink-900/80 p-4 backdrop-blur-sm transition-opacity">
     <div className="relative w-full max-w-sm border-2 border-gold-light bg-paper p-8 text-center shadow-2xl">
       <h3 className="mb-3 font-serif text-3xl font-bold text-gold-light">
-        Coming Soon!
-      </h3>
+  {showComingSoon === "flagcom" ? "Committee X" : "Coming Soon!"}
+</h3>
       <p className="mb-6 leading-relaxed text-ink/80">
-        The agenda and details of Committee X will be revealed closer to the conference.
-      </p>
+  {showComingSoon === "flagcom" 
+    ? "The agenda and details of Committee X will be revealed closer to the conference."
+    : "👀?"}
+</p>
       <button 
         onClick={() => setShowComingSoon(false)}
         className="border border-ink bg-ink px-6 py-2 font-mono text-sm font-semibold tracking-widest text-paper transition-colors hover:bg-paper hover:text-ink"
