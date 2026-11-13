@@ -22,7 +22,7 @@ export default function AboutCusatMun(){
     <Reveal delay={200} className="mx-auto w-full max-w-xs sm:max-w-sm">
      <div className="rotate-2 border-4 border-gold bg-paper p-2.5 shadow-2xl">
       <div className="relative aspect-[900/1198] overflow-hidden bg-ink-900">
-       <Image src="/images/campus.jpg" alt="Illustration of a Theyyam artist in full ornament, framed by banana leaves, brass lamps and jasmine garlands" fill sizes="(max-width:768px) 80vw, 384px" className="object-cover"/>
+       <Image src="/images/gallery12.jpeg" alt="Illustration of a Theyyam artist in full ornament, framed by banana leaves, brass lamps and jasmine garlands" fill sizes="(max-width:768px) 80vw, 384px" className="object-cover"/>
       </div>
      </div>
     </Reveal>
