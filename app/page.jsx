@@ -20,41 +20,72 @@ const d=ms=>({"--d":ms+"ms"});
 export default function Home(){
  return(<main className="animate-fade-in">
   {/* ---------- hero: the design team's artwork ---------- */}
-  <section className="relative isolate overflow-hidden bg-ink-900 text-paper">
-   <div className="hero-art absolute inset-0 -z-20" aria-hidden="true"/>
-   <div className="hero-shade absolute inset-0 -z-10" aria-hidden="true"/>
-   <div className="hero-pad mx-auto flex max-w-6xl px-4 pb-14 sm:px-6 lg:min-h-[46rem] lg:items-center lg:pb-20">
-    <div className="max-w-xl">
-     <div className="anim-up flex flex-wrap items-center gap-3" style={d(0)}>
-      <Stamp text="Issued by CUSAT" sub="2027" rotate={-7} size={68} tone="gold"/>
-      <span className="font-malayalam text-xl text-gold-light">സ്വാഗതം</span>
-     </div>
-     <h1 className="anim-up mt-5 text-6xl font-black leading-[.92] text-paper sm:text-7xl lg:text-8xl" style={{...d(150),textShadow:"0 2px 26px rgba(0,0,0,.6)"}}>
-      CUSAT<br/>MUN
-     </h1>
-     <div className="anim-up mt-4 inline-block border-4 border-gold-light px-3 py-0.5 font-serif text-3xl font-bold text-gold-light sm:text-4xl" style={d(300)}>2027</div>
-     <p className="label-mono anim-up mt-5 !text-paper/85" style={d(420)}>{DATES} · Kochi, Kerala</p>
-     <p className="anim-up mt-3 max-w-md leading-relaxed text-paper/85" style={d(520)}>Three days of diplomacy, debate and consensus-building at Cochin University of Science and Technology - open to school, college and individual delegates.</p>
-     <div className="anim-up mt-7 flex flex-wrap items-center gap-4" style={d(620)}>
-      <Link href="/registration" className="btn-gold anim-ring px-8 py-4 text-lg">Register Now</Link>
-      <a href="#explore" className="label-mono !text-gold-light underline underline-offset-4 hover:!text-paper">Or step into Kerala ↓</a>
-     </div>
-     <div className="anim-up mt-10" style={d(760)}>
-      <p className="label-mono mb-3 !text-paper/70">Opening ceremony begins in</p>
-      <Countdown/>
-     </div>
-    </div>
-   </div>
-  </section>
-  <div className="kasavu-band"/>
+ <section className="bg-ink-900 text-paper">
+      
+      {/* 1. Banners (With Floating Register Button & Gradient Fade) */}
+      <div className="relative w-full">
+        <img 
+          src="/images/verticalbannerfinal.png" 
+          alt="CUSAT MUN 2027" 
+          className="h-auto w-full object-cover md:hidden" 
+        />
+        <img 
+          src="/images/horizontalbannerfinal.jpg" 
+          alt="CUSAT MUN 2027" 
+          className="hidden h-auto w-full object-cover md:block" 
+        />
+        
+        {/* Floating Register Button - Positioned in the gap */}
+        <div className="absolute bottom-[31%] left-1/2 z-20 -translate-x-1/2 md:bottom-[25%] lg:-bottom-[8%]">
+          <Link href="/registration" className="btn-gold anim-ring px-6 py-3 text-base shadow-2xl drop-shadow-xl">
+            Register Now
+          </Link>
+        </div>
 
+        {/* The Magic Fade */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 h-24 bg-gradient-to-t from-ink-900 to-transparent sm:h-32 md:h-48 lg:h-56"></div>
+      </div>
+
+      {/* 2. Hero Content (Pulled up slightly to overlap the fade) */}
+      <div className="relative z-10 -mt-4 mx-auto flex max-w-4xl flex-col items-center px-4 pb-12 text-center sm:-mt-8 sm:px-6 lg:mt-20 lg:pb-20">
+        
+        
+        
+        <p className="label-mono anim-up mt-8 !text-paper/85 md:mt-10" style={d(420)}>
+          {DATES} · Kochi, Kerala
+        </p>
+        
+        <p className="anim-up mt-4 max-w-2xl leading-relaxed text-paper/85" style={d(520)}>
+          Three days of diplomacy, debate and consensus-building at Cochin University of Science and Technology - open to school, college and individual delegates.
+        </p>
+        
+        {/* Action Buttons (Now just the Step into Kerala link, perfectly centered) */}
+        <div className="anim-up mt-8 flex flex-col items-center justify-center" style={d(620)}>
+          <a href="#explore" className="label-mono !text-gold-light underline underline-offset-4 hover:!text-paper">
+            Step into Kerala ↓
+          </a>
+        </div>
+
+        {/* Countdown Timer */}
+        <div className="anim-up mt-12 flex flex-col items-center" style={d(760)}>
+          <p className="label-mono mb-4 !text-paper/70">Opening ceremony begins in</p>
+          <Countdown/>
+        </div>
+        
+      </div>
+    </section>
+  <div className="kasavu-band"/>
+  <AboutCusat/>
+  <div className="kasavu-band"/>
+  <AboutCusatMun/>
+  <div className="kasavu-band"/>
   {/* ---------- the collage menu ---------- */}
   <section id="explore" className="relative isolate overflow-hidden bg-paper pb-14 pt-24 md:pt-28">
    <Bells/>
    <div className="mx-auto max-w-6xl px-4 sm:px-6">
     <Reveal className="text-center">
      <h2 className="mt-1 text-3xl font-bold sm:text-4xl">Step into Kerala</h2>
-     <p className="mx-auto mt-3 max-w-xl text-ink/80">Touch the collage to find your way. Tap the bus, the pookalam, the Kathakali… a label appears - tap it to go.</p>
+     <p className="mx-auto mt-3 max-w-xl text-ink/80">Every piece of this picture tells a different story; make your way through the collage to find out. </p>
     </Reveal>
     <Reveal delay={150} className="mt-8"><CollageMenu/></Reveal>
    </div>
@@ -78,10 +109,7 @@ export default function Home(){
   <div className="kasavu-band"/>
 
   {/* ---------- about, location ---------- */}
-  <AboutCusatMun/>
-  <div className="kasavu-band"/>
-  <AboutCusat/>
-  <div className="kasavu-band"/>
+ 
   <GettingHere/>
   <div className="kasavu-band"/>
 

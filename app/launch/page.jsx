@@ -19,64 +19,65 @@ export default function LaunchPage() {
   };
 
   return (
-    <div 
-      className={`flex min-h-screen flex-col items-center justify-center bg-ink-900 p-6 text-center text-paper transition-all duration-1000 ease-in-out ${
+  <div
+      className={`flex min-h-screen items-center justify-center bg-ink-900 p-6 text-paper transition-all duration-1000 ease-in-out ${
         isLaunching ? "opacity-0 scale-110 blur-sm pointer-events-none" : "opacity-100 scale-100 blur-none"
       }`}
     >
-      
-      {/* Logos Section */}
-      <div className="mb-12 flex flex-wrap items-center justify-center gap-10 md:gap-20">
-        <Image
-          src="/images/cusat_logo_gold.png" 
-          alt="CUSAT Logo"
-          width={140}
-          height={140}
-          className="object-contain drop-shadow-lg"
-        />
-        <Image
-          src="/images/dyf.png" 
-          alt="Department of Youth Welfare"
-          width={140}
-          height={140}
-          className="object-contain drop-shadow-lg"
-        />
-      </div>
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-12 lg:flex-row lg:justify-center lg:gap-16">
+        
+        {/* Left Side: Portrait & Name */}
+        <div className="flex w-64 shrink-0 flex-col items-center text-center sm:w-72 lg:w-80">
+          <img 
+            src="/images/roji.jpg" 
+            alt="Roji M. John" 
+            className="h-auto w-full rounded-sm border border-gold-light/30 object-cover shadow-lg"
+          />
+          <div className="mt-6">
+            <p className="mb-2 font-mono text-xs uppercase tracking-[0.2em] text-paper/60">
+              Inauguration By
+            </p>
+            <h3 className="font-serif text-2xl font-medium text-gold-light sm:text-3xl">
+              Roji M. John
+            </h3>
+            <p className="mt-1 font-mono text-sm tracking-widest text-paper/80">
+              Minister of Higher Education of Kerala
+            </p>
+          </div>
+        </div>
 
-      {/* Title Section */}
-      <div className="mb-12">
-        <h2 className="mb-4 font-mono text-lg uppercase tracking-[0.3em] text-gold-light/80">
-          Department of Youth Welfare Presents
-        </h2>
-        <h1 className="font-serif text-5xl font-bold text-gold-light drop-shadow-2xl md:text-7xl">
-          CUSAT MUN 2027
-        </h1>
-        <p className="mt-6 font-mono text-xl tracking-widest text-paper/80 md:text-2xl">
-          OFFICIAL PORTAL LAUNCH
-        </p>
-      </div>
+        {/* Right Side: Text & Button */}
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+          
+          {/* Logos Section */}
+          <div className="mb-10 flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:justify-start">
+            <Image src="/images/cusat_logo_gold.png" alt="CUSAT Logo" width={120} height={120} className="object-contain" />
+            <Image src="/images/dyf.png" alt="Department of Youth Welfare" width={120} height={120} className="object-contain" />
+          </div>
 
-      {/* Inaugurator Info */}
-      <div className="mb-12 flex flex-col items-center">
-        <p className="mb-2 font-mono text-sm uppercase tracking-[0.2em] text-paper/60">
-          Inauguration By
-        </p>
-        <h3 className="font-serif text-3xl font-medium text-gold-light">
-          Roji M. John
-        </h3>
-        <p className="mt-1 font-mono text-sm tracking-widest text-paper/80">
-          Minister of Higher Education of Kerala
-        </p>
-      </div>
+          {/* Title Section */}
+          <div className="mb-12">
+            <h2 className="mb-4 font-mono text-base uppercase tracking-[0.3em] text-gold-light/80">
+              Department of Youth Welfare Presents
+            </h2>
+            <h1 className="font-serif text-5xl font-bold text-gold-light drop-shadow-xl md:text-6xl lg:text-7xl">
+              CUSAT MUN 2027
+            </h1>
+            <p className="mt-4 font-mono text-lg tracking-widest text-paper/80 md:text-xl">
+              OFFICIAL PORTAL LAUNCH
+            </p>
+          </div>
 
-      {/* Minister's Launch Button */}
-      <button
-        onClick={handleLaunch}
-        className="group relative overflow-hidden rounded-sm border-2 border-gold-light bg-ink px-12 py-5 font-mono text-2xl font-bold tracking-widest text-gold-light transition-all duration-500 hover:bg-gold-light hover:text-ink-900 hover:shadow-[0_0_40px_rgba(212,175,55,0.6)]"
-      >
-        <span className="relative z-10">ENTER SITE</span>
-      </button>
-      
-    </div>
+          {/* Launch Button */}
+          <button 
+            onClick={handleLaunch} 
+            className="group relative overflow-hidden rounded-sm border-2 border-gold-light bg-ink px-10 py-4 font-mono text-xl font-bold tracking-widest text-gold-light transition-colors duration-300 hover:bg-gold-light hover:text-ink-900"
+          >
+            <span className="relative z-10">ENTER SITE</span>
+          </button>
+        </div>
+        
+      </div>
+      </div>
   );
 }

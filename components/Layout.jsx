@@ -17,7 +17,18 @@ export function Navbar(){
  return(<header className={`sticky top-0 z-50 bg-ink transition-shadow ${scrolled?"shadow-xl":""}`}>
   <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2.5 sm:px-6">
    <Link href="/" className="flex items-center gap-2.5">
-    <MunLogo theme="light" size={38}/>
+    <div className="flex shrink-0 items-center gap-3">
+  <img 
+    src="/images/cusat_logo_gold.png" 
+    alt="CUSAT Logo" 
+    className="h-11 w-auto object-contain" 
+  />
+  <img 
+    src="/images/dyf.png" 
+    alt="Department of Youth Welfare" 
+    className="h-11 w-auto object-contain" 
+  />
+</div>
     <span className="font-serif text-lg font-bold leading-none text-paper">CUSAT MUN<span className="label-mono mt-0.5 block font-normal text-gold-light">Kochi · 2027</span></span>
    </Link>
    <div className="hidden items-center lg:flex">
