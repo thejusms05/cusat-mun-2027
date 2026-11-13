@@ -8,7 +8,7 @@ const NEW_SPOTS = [
   { id: 'registration', name: 'Registrations', label: 'Register Now', href: '/registration', pos: { h: { top: '55%', left: '12%' }, v: { top: '47%', left: '18%' } } },
   { id: 'contact', name: 'Contacts', label: 'Get in Touch', href: '/contact', pos: { h: { top: '55%', left: '45%' }, v: { top: '25%', left: '22%' } } },
   { id: 'committees', name: 'Committees', label: 'View Committees', href: '/committees', pos: { h: { top: '40%', left: '63%' }, v: { top: '31%', left: '45%' } } },
-  { id: 'executive-board', name: 'Executive Board', label: 'Meet the EB', href: '/executive-board', pos: { h: { top: '65%', left: '85%' }, v: { top: '67%', left: '52%' } } },
+  { id: 'executive-board', name: 'Executive Board', label: 'Meet the EB', href: '/executive-board', pos: { h: { top: '65%', left: '85%' }, v: { top: '66%', left: '46%' } } },
   { id: 'secretariat', name: 'Secretariat', label: 'The Team', href: '/secretariat', pos: { h: { top: '89%', left: '67%' }, v: { top: '88%', left: '59%' } } },
   { id: 'itinerary', name: 'Itinerary', label: 'Schedule', href: '/itinerary', pos: { h: { top: '82%', left: '43.5%' }, v: { top: '86%', left: '34%' } } },
   { id: 'portfolio-matrix', name: 'Portfolio Matrix', label: 'Allotments', href: '/portfolio-matrix', pos: { h: { top: '40%', left: '83%' }, v: { top: '15%', left: '40%' } } },
