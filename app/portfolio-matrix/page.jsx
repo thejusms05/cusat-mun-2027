@@ -24,14 +24,20 @@ export default function PortfolioMatrix() {
           </p>
           
           {/* Button */}
-          <a 
-            href="https://docs.google.com/spreadsheets/d/1kF2yYbmZ58cv_--NxEj2dp9Xe5yQ61EQUvTpP8ULlPQ/edit?usp=sharing" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 border-2 border-ink bg-ink px-6 py-3 font-mono text-sm font-semibold tracking-widest text-paper transition-colors hover:bg-paper hover:text-ink"
-          >
-            OPEN SPREADSHEET
-          </a>
+          {/* 
+            <a
+              href="https://docs.google.com/spreadsheets/d/1kF2yYbmZ58cv_--NxEj2dp9Xe5yQ61EQUvTpP8ULLPQ/edit?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 border-2 border-ink bg-ink px-6 py-3 font-mono text-sm font-semibold tracking-widest text-paper transition-colors hover:bg-paper hover:text-ink"
+            >
+              OPEN SPREADSHEET
+            </a>
+            */}
+            
+            <span className="flex items-center gap-2 border-2 border-dashed border-ink/30 px-6 py-3 font-mono text-sm font-semibold tracking-widest text-ink/55 cursor-not-allowed">
+              OPENING SOON
+            </span>
 
         </div>
       </div>

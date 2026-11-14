@@ -98,7 +98,7 @@ export function Footer(){
     {[["Committees","/committees"],["Portfolio Matrix","/portfolio-matrix"],["Registration","/registration"],["Itinerary","/itinerary"],["Executive Board","/executive-board"]].map(([l,h])=><li key={h}><Link href={h} className="transition hover:text-gold-light">{l}</Link></li>)}</ul></div>
    <div><h3 className="label-mono text-gold-light">Reach Us</h3>
     <ul className="mt-3 space-y-2 text-sm">
-  {[["Help Desk","cusatmun@cusat.ac.in"]].map(([l,e])=><li key={l}><a href={`mailto:${e}`} className="flex items-center gap-2 transition hover:text-gold-light"><Mail size={16} className="text-gold-light"/>{l}: {e}</a></li>)}
+  {[["E-mail","cusatmun@cusat.ac.in"]].map(([l,e])=><li key={l}><a href={`mailto:${e}`} className="flex items-center gap-2 transition hover:text-gold-light"><Mail size={16} className="text-gold-light"/>{l}: {e}</a></li>)}
   <li>
     <a href="tel:+919008831934" className="flex items-center gap-2 transition hover:text-gold-light">
       <Phone size={16} className="text-gold-light"/>

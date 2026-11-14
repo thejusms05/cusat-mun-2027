@@ -56,7 +56,7 @@ export default function Home(){
         </p>
         
         <p className="anim-up mt-4 max-w-2xl leading-relaxed text-paper/85" style={d(520)}>
-          Three days of diplomacy, debate and consensus-building at Cochin University of Science and Technology - open to school, college and individual delegates.
+          Three days of diplomacy, debate and consensus-building at Cochin University of Science and Technology - open to school, college, private and individual delegates.
         </p>
         
         {/* Action Buttons (Now just the Step into Kerala link, perfectly centered) */}
@@ -127,7 +127,7 @@ export default function Home(){
      <Reveal key={t} delay={i*120} className="folder w-64 text-center">
       <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border-4 border-gold bg-ink text-gold-light"><I size={26}/></div>
       <h3 className="mt-4 text-lg font-bold">{t}</h3><p className="mt-2 text-sm text-ink/80">{desc}</p>
-      <div className="label-mono mt-4 border-t border-dashed border-ink/20 pt-3 text-ink/45">Seat No. CUMUN-{String(i+1).padStart(3,"0")}</div>
+      
      </Reveal>);})}
    </div>
    </div>
