@@ -31,7 +31,10 @@ export default function GettingHere(){
      <MapPin className="text-stamp" size={26}/>
      <h3 className="mt-3 text-xl font-bold">Venue</h3>
      <p className="mt-2 text-sm leading-relaxed text-ink/80">{ABOUT.location.address}</p>
-     <a href={`https://www.google.com/maps/dir/?api=1&destination=${q}`} target="_blank" rel="noopener noreferrer" className="btn-gold mt-5 w-full"><Nav size={16}/>Travel Brochure</a>
+     {/*
+<a href={`https://www.google.com/maps/dir/?api=1&destination=${q}`} target="_blank" rel="noopener noreferrer" className="btn-gold mt-5 w-full"><Nav size={16}/>Travel Brochure</a>
+*/}
+<span className="btn mt-5 w-full cursor-not-allowed border-2 border-dashed border-ink/30 text-ink/55"><Nav size={16}/>Travel Brochure</span>
      <a href={`https://www.google.com/maps/search/?api=1&query=${q}`} target="_blank" rel="noopener noreferrer" className="btn-ghost mt-3 w-full"><Ext size={16}/>Open in Google Maps</a>
     </div>
    </Reveal>
