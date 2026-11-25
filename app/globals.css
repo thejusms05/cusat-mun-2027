@@ -1,5 +1,58 @@
 @tailwind base;@tailwind components;@tailwind utilities;
 html{scroll-behavior:smooth}
+body,.bg-paper,.bg-paper-dark{transition:background-color .7s ease,color .7s ease,border-color .7s ease}
+/* Dies Irae Dark Theme */
+html.dies-irae-mode body,
+html.dies-irae-mode .bg-paper {
+  background-color: #110d0c !important;
+  color: #e8dfd1 !important;
+}
+html.dies-irae-mode .bg-paper-dark {
+  background-color: #1c1514 !important;
+}
+html.dies-irae-mode header,
+html.dies-irae-mode nav,
+html.dies-irae-mode .bg-ink {
+  background-color: #0a0707 !important;
+  transition: background-color .7s ease;
+}
+html.dies-irae-mode .bg-ink-900\/80 {
+  background-color: rgba(8, 5, 5, 0.88) !important;
+}
+html.dies-irae-mode .art-band-a,
+html.dies-irae-mode .art-band-b {
+  filter: grayscale(0.65) brightness(0.45) contrast(1.25);
+  transition: filter .7s ease;
+}
+html.dies-irae-mode .text-ink,
+html.dies-irae-mode .text-ink\/80,
+html.dies-irae-mode .text-ink\/75,
+html.dies-irae-mode .text-ink\/70,
+html.dies-irae-mode .text-ink\/60,
+html.dies-irae-mode .label-mono {
+  color: #e2d7c5 !important;
+}
+html.dies-irae-mode .text-ink\/40 {
+  color: #a89984 !important;
+}
+html.dies-irae-mode .text-stamp {
+  color: #e05a5a !important;
+}
+html.dies-irae-mode .border-ink\/20 {
+  border-color: rgba(200, 163, 86, 0.35) !important;
+}
+html.dies-irae-mode .btn-ink {
+  background-color: #6e1414 !important;
+  border-color: #c8a356 !important;
+  color: #f5ebd6 !important;
+}
+html.dies-irae-mode .btn-ink:hover {
+  background-color: #8f1b1b !important;
+}
+html.dies-irae-mode img {
+  filter: brightness(0.82) contrast(1.08);
+  transition: filter .7s ease;
+}
 body{@apply font-sans text-ink bg-paper antialiased}
 h1,h2,h3{@apply font-serif}
 ::selection{background:#C28A36;color:#0F1C0E}

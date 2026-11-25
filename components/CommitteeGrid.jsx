@@ -11,6 +11,17 @@ export default function CommitteeGrid(){
  const q=useSearchParams().get("c");
  const [sel,setSel]=useState(null);
  const [showComingSoon, setShowComingSoon] = useState(false);
+ const [isDiesIrae, setIsDiesIrae] = useState(false);
+
+useEffect(() => {
+  document.documentElement.classList.toggle("dies-irae-mode", isDiesIrae);
+  return () => document.documentElement.classList.remove("dies-irae-mode");
+}, [isDiesIrae]);
+
+const closeModal = () => {
+  if (sel?.id === "flagcom") setIsDiesIrae(false);
+  setSel(null);
+};
  const handleViewDetails = (c) => {
   if (c.id === "bestofbest") {
     setShowComingSoon(c.id);
@@ -26,22 +37,22 @@ export default function CommitteeGrid(){
     setSel(committees.find(c => c.id === q) || null);
   }
 }, [q]);
- useEffect(()=>{const f=e=>e.key==="Escape"&&setSel(null);addEventListener("keydown",f);return()=>removeEventListener("keydown",f)},[]);
+ useEffect(()=>{const f=e=>{if(e.key==="Escape"){setSel(null);setIsDiesIrae(false);}};addEventListener("keydown",f);return()=>removeEventListener("keydown",f)},[]);
  const SelIcon=sel?iconFor(sel):null;
  return(<>
   <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
    {committees.map((c,i)=>(
     <Reveal key={c.id} delay={(i%4)*90}>
-     <CommitteeTile committee={c} onViewDetails={handleViewDetails}/>
+     <CommitteeTile committee={c} onViewDetails={handleViewDetails} onReveal={(id) => setIsDiesIrae(id === "flagcom")} isDiesIrae={isDiesIrae}/>
     </Reveal>
    ))}
   </div>
-  {sel&&<div className="fixed inset-0 z-[60] flex items-end justify-center anim-fade bg-ink-900/80 p-0 sm:items-center sm:p-4" onClick={()=>setSel(null)} role="dialog" aria-modal="true">
+  {sel&&<div className="fixed inset-0 z-[60] flex items-end justify-center anim-fade bg-ink-900/80 p-0 sm:items-center sm:p-4" onClick={closeModal} role="dialog" aria-modal="true">
    <div onClick={e=>e.stopPropagation()} className="anim-sheet max-h-[92vh] w-full max-w-2xl overflow-y-auto border-2 border-gold bg-paper">
     <div className="kasavu-band"/>
     <div className="p-6 sm:p-8">
      <div className="relative">
-      <button aria-label="Close" onClick={()=>setSel(null)} className="absolute right-0 top-0 rounded-sm border-2 border-ink/20 p-1.5 transition hover:bg-ink/5"><X size={18}/></button>
+      <button aria-label="Close" onClick={closeModal} className="absolute right-0 top-0 rounded-sm border-2 border-ink/20 p-1.5 transition hover:bg-ink/5"><X size={18}/></button>
       <div className="flex items-start gap-4 pr-10">
        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-4 border-gold bg-ink text-gold-light"><SelIcon size={28} strokeWidth={1.6}/></div>
        <div><h2 className="text-3xl font-bold">{sel.abbr}</h2><p className="text-ink/70">{sel.name}</p>

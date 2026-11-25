@@ -4,7 +4,7 @@ import {GraduationCap} from "lucide-react";
 import {iconFor} from "@/components/committeeIcons";
 
 // A committee wrapped in a banana leaf. Tap the leaf and it unwraps.
-export default function CommitteeTile({committee,onViewDetails}){
+export default function CommitteeTile({committee, onViewDetails, onReveal, isDiesIrae}){
  const [open,setOpen]=useState(false);
  const Icon=iconFor(committee);
  return (
@@ -22,18 +22,32 @@ export default function CommitteeTile({committee,onViewDetails}){
    </div>
    <button 
       type="button" 
-      onClick={() => committee.id === "bestofbest" ? onViewDetails(committee) : setOpen(true)} 
+      onClick={() => {
+        onReveal?.(committee.id);
+        if (committee.id === "bestofbest") {
+          onViewDetails(committee);
+        } else {
+          setOpen(true);
+        }
+      }}
       className={`absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center border-2 border-gold bg-paper transition-all duration-500 ${open ? "pointer-events-none opacity-0 scale-105" : "opacity-100 scale-100"}`}
     >
-      <img 
-        src={committee.image} 
-        alt="Committee Figure" 
-        className="h-[80%] w-[80%] object-contain drop-shadow-md" 
-      />
-      <span className="absolute bottom-4 label-mono text-ink/80 uppercase tracking-wider">{committee.navarasa}</span>
+      <img
+       src={committee.image}
+       alt="Committee Figure"
+       className={`h-[80%] w-[80%] object-contain drop-shadow-md transition-opacity duration-700 ${isDiesIrae && committee.id !== "flagcom" ? "opacity-0" : "opacity-100"}`}
+     />
+     <img
+       src="/images/flagshiplogo.png"
+       alt="Dies Irae Logo"
+       className={`absolute h-[65%] w-[65%] object-contain drop-shadow-md transition-opacity duration-700 ${isDiesIrae && committee.id !== "flagcom" ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+     />
+     <span className={`absolute bottom-4 label-mono text-ink/80 uppercase tracking-wider transition-opacity duration-700 ${isDiesIrae && committee.id !== "flagcom" ? "opacity-0" : "opacity-100"}`}>{committee.navarasa}</span>
     </button>
   </div>
  );
 }
+
+
 
 
