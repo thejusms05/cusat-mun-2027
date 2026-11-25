@@ -42,6 +42,38 @@ export default function GalleryPage() {
 
         </div>
       </section>
+      {/* FEATURED MOMENT: WEBSITE LAUNCH */}
+      <section className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
+        <div className="flex flex-col gap-6 border-2 border-gold/40 bg-paper p-4 shadow-xl sm:p-8">
+
+          {/* Image spans full width on top */}
+          <div className="mx-auto w-full max-w-2xl overflow-hidden border-2 border-gold/20 bg-ink-900/5">
+            <Image
+              src="/images/weblaunch.jpeg"
+              alt="Website launch of CUSAT MUN 2027 by Shri Roji M. John"
+              width={2000}
+              height={800}
+              className="h-auto w-full transition-transform hover:scale-[1.02]"
+              priority
+            />
+          </div>
+
+          {/* Text section centered below */}
+          <div className="flex flex-col items-center justify-center px-2 text-center md:px-6 md:py-4">
+            <p className="label-mono mb-2 text-sm uppercase tracking-widest text-ink/60">
+              Featured Highlight
+            </p>
+            <h2 className="mb-4 font-serif text-2xl font-bold text-ink sm:text-3xl lg:text-4xl">
+              Official Website Launch
+            </h2>
+            <div className="mb-4 h-px w-16 bg-gold/70"></div>
+            <p className="max-w-3xl text-base leading-relaxed text-ink/80 sm:text-lg">
+              The official website launch of CUSAT MUN 2027, proudly inaugurated by <b>Shri Roji M. John</b>, Minister for Higher Education.
+            </p>
+          </div>
+
+        </div>
+      </section>
 
       {/* STANDARD GALLERY GRID */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
