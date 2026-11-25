@@ -12,14 +12,14 @@ export default function CommitteeGrid(){
  const [sel,setSel]=useState(null);
  const [showComingSoon, setShowComingSoon] = useState(false);
  const handleViewDetails = (c) => {
-  if (c.id === "bestofbest" || c.id === "flagcom") {
+  if (c.id === "bestofbest") {
     setShowComingSoon(c.id);
   } else {
     setSel(c);
   }
 };
  useEffect(() => {
-  if (q === "bestofbest" || q === "flagcom") {
+  if (q === "bestofbest") {
     setShowComingSoon(q);
     setSel(null);
   } else {
