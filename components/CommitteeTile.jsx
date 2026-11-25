@@ -1,11 +1,16 @@
 "use client";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {GraduationCap} from "lucide-react";
 import {iconFor} from "@/components/committeeIcons";
 
 // A committee wrapped in a banana leaf. Tap the leaf and it unwraps.
 export default function CommitteeTile({committee, onViewDetails, onReveal, isDiesIrae}){
  const [open,setOpen]=useState(false);
+ useEffect(() => {
+  if (isDiesIrae && committee.id !== "flagcom") {
+    setOpen(false);
+  }
+}, [isDiesIrae, committee.id]);
  const Icon=iconFor(committee);
  return (
   <div className={`wrap-scene relative h-[23rem] w-full ${open?"wrap-open":""}`}>
