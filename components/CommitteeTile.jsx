@@ -22,7 +22,7 @@ export default function CommitteeTile({committee,onViewDetails}){
    </div>
    <button 
       type="button" 
-      onClick={() => committee.id === "bestofbest" || committee.id === "flagcom" ? onViewDetails(committee) : setOpen(true)} 
+      onClick={() => committee.id === "bestofbest" ? onViewDetails(committee) : setOpen(true)} 
       className={`absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center border-2 border-gold bg-paper transition-all duration-500 ${open ? "pointer-events-none opacity-0 scale-105" : "opacity-100 scale-100"}`}
     >
       <img 
@@ -35,3 +35,5 @@ export default function CommitteeTile({committee,onViewDetails}){
   </div>
  );
 }
+
+
